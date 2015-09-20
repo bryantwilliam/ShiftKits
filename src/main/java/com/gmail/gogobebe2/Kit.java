@@ -1,11 +1,18 @@
 package com.gmail.gogobebe2;
 
-import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public abstract class Kit {
-    protected abstract void giveLevel1Kit(Player player);
-    protected abstract void giveLevel2Kit(Player player);
-    protected abstract void giveLevel3Kit(Player player);
+    //          slot     item
+    private Map<Integer, ItemStack> items;
 
-    protected abstract boolean canBuy();
+    protected Kit(Map<Integer, ItemStack> items) {
+        this.items = items;
+    }
+
+    protected Map<Integer, ItemStack> getItems() {
+        return this.items;
+    }
 }
