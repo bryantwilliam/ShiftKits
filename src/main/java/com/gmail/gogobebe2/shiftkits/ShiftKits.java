@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2;
+package com.gmail.gogobebe2.shiftkits;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
