@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftkits;
+package com.gmail.gogobebe2.shiftkits.kits;
 
 import com.gmail.gogobebe2.shiftkits.requirements.Cost;
 import com.gmail.gogobebe2.shiftkits.requirements.Requirement;
@@ -9,17 +9,18 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Map;
 
-public abstract class Kit {
+public class Kit {
     private String name;
     private Map<Integer, ItemStack> contents;
     private ItemStack helmet;
     private ItemStack chestplate;
     private ItemStack leggings;
     private ItemStack boots;
-
     private Requirement requirement;
+    private int requiredLevel;
+    private KitGroup kitGroup;
 
-    protected Kit(String name, Requirement requirement, Map<Integer, ItemStack> contents,
+    protected Kit(String name, KitGroup kitGroup, Requirement requirement, Map<Integer, ItemStack> contents,
                   ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         this.name = name;
         this.requirement = requirement;
@@ -28,6 +29,8 @@ public abstract class Kit {
         this.chestplate = chestplate;
         this.leggings = leggings;
         this.boots = boots;
+        this.kitGroup = kitGroup;
+        this.requiredLevel = kitGroup.getLevel(this) - 1;
     }
 
     protected boolean trySelect(Player player) {
@@ -36,10 +39,8 @@ public abstract class Kit {
         if (has(player)) canSelect = true;
         else if (canUnlock(player)) {
             player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with " + requirement.getDescription());
-            if (requirement instanceof Cost) {
-                ((Cost) requirement).takeXP(player);
-            }
-            // TODO: Unlock kit using ShiftStats.
+            if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
+            // ShiftStats.getAPI().addKits(player.getUniqueId(), name);
             canSelect = true;
         }
 
@@ -49,18 +50,18 @@ public abstract class Kit {
             return true;
         } else {
             player.sendMessage(ChatColor.RED + "You do not satisfy the requirements to unlock this kit!");
-            player.sendMessage(ChatColor.DARK_RED + "You need " + requirement.getDescription() + " to unlock this kit.");
+            player.sendMessage(ChatColor.DARK_RED + "You need " + requirement.getDescription() + (requiredLevel == 0 ? "" : " and level " + requiredLevel) + " to unlock this kit.");
             return false;
         }
     }
 
     protected boolean canUnlock(Player player) {
-        return requirement.has(player);
+        return requirement.satisifies(player) && (requiredLevel == 0 || kitGroup.getKit(requiredLevel).has(player));
     }
 
     protected boolean has(Player player) {
-        // TODO: check if player has this kit using ShiftStats.
-        return false;
+        // return ShiftStats.getAPI().getKits(Player.getUniqueId()).contains(name);
+        return true;
     }
 
     private void select(Player player) {
