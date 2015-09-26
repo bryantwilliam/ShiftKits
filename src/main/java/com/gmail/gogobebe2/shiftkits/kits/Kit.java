@@ -56,7 +56,7 @@ public class Kit {
     }
 
     protected boolean canUnlock(Player player) {
-        return requirement.satisifies(player) && (requiredLevel == 0 || kitGroup.getKit(requiredLevel).has(player));
+        return requirement.satisfies(player) && (requiredLevel == 0 || kitGroup.getKit(requiredLevel).has(player));
     }
 
     protected boolean has(Player player) {

@@ -11,7 +11,7 @@ public class Cost extends Requirement {
     }
 
     @Override
-    public boolean has(Player player) {
+    public boolean satisfies(Player player) {
         // TODO: hook into xp plugin to find xp.
         return false;
     }

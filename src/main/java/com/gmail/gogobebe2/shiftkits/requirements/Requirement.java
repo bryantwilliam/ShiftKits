@@ -14,5 +14,5 @@ public abstract class Requirement {
         return description;
     }
 
-    public abstract boolean satisifies(Player player);
+    public abstract boolean satisfies(Player player);
 }
