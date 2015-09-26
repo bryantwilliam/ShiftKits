@@ -5,18 +5,29 @@ import com.gmail.gogobebe2.shiftkits.requirements.Requirement;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.Map;
 
 public abstract class Kit {
     private String name;
-    private Map<Integer, ItemStack> inventory;
+    private Map<Integer, ItemStack> contents;
+    private ItemStack helmet;
+    private ItemStack chestplate;
+    private ItemStack leggings;
+    private ItemStack boots;
+
     private Requirement requirement;
 
-    protected Kit(String name, Map<Integer, ItemStack> inventory, Requirement requirement) {
-        this.inventory = inventory;
+    protected Kit(String name, Requirement requirement, Map<Integer, ItemStack> contents,
+                  ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         this.name = name;
         this.requirement = requirement;
+        this.contents = contents;
+        this.helmet = helmet;
+        this.chestplate = chestplate;
+        this.leggings = leggings;
+        this.boots = boots;
     }
 
     protected boolean trySelect(Player player) {
@@ -33,7 +44,7 @@ public abstract class Kit {
         }
 
         if (canSelect) {
-            // TODO: Select the kit.
+            select(player);
             player.sendMessage(ChatColor.GREEN + name + " kit selected.");
             return true;
         } else {
@@ -50,5 +61,17 @@ public abstract class Kit {
     protected boolean has(Player player) {
         // TODO: check if player has this kit using ShiftStats.
         return false;
+    }
+
+    private void select(Player player) {
+        PlayerInventory inventory = player.getInventory();
+        inventory.clear();
+        inventory.setHelmet(helmet);
+        inventory.setChestplate(chestplate);
+        inventory.setLeggings(leggings);
+        inventory.setBoots(boots);
+        for (int slot : contents.keySet()) {
+            inventory.setItem(slot, contents.get(slot));
+        }
     }
 }
