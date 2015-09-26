@@ -33,8 +33,6 @@ public class Kit {
         this.levelRequirement = levelRequirement;
     }
 
-    // TODO: remove warning suppression once ShiftStats has been sorted out.
-    @SuppressWarnings("ConstantConditions")
     public boolean trySelect(Player player) {
         boolean canSelect = false;
 
