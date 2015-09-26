@@ -17,7 +17,7 @@ public class KitGroup {
     public void addKit(int level, boolean levelRequirement, Requirement requirement, Map<Integer, ItemStack> contents,
                        Material helmet, Material chestplate, Material leggings, Material boots) throws IllegalArgumentException {
         if (level <= 0) throw new IllegalArgumentException("Can't have a level that is 0 or below!");
-        kits.put(level, new Kit(name, this, levelRequirement, requirement, contents, helmet, chestplate, leggings, boots));
+        kits.put(level, new Kit(name + level, this, levelRequirement, requirement, contents, helmet, chestplate, leggings, boots));
     }
 
     protected int getLevel(Kit kit) throws NullPointerException {
