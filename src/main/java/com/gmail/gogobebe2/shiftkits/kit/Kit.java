@@ -1,10 +1,12 @@
 package com.gmail.gogobebe2.shiftkits.kit;
 
+import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 public class Kit {
@@ -41,7 +43,13 @@ public class Kit {
             player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with "
                     + requirement.getDescription());
             if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
-            // ShiftStats.getAPI().addKits(player.getUniqueId(), name);
+            try {
+                ShiftStats.getAPI().addKit(player.getUniqueId(), name);
+            } catch (SQLException | ClassNotFoundException e) {
+                e.printStackTrace();
+                player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database to retrieve kits!");
+                return false;
+            }
             canSelect = true;
         }
 
@@ -70,8 +78,18 @@ public class Kit {
     }
 
     private boolean has(Player player) {
-        // return ShiftStats.getAPI().getKits(Player.getUniqueId()).contains(name);
-        return true;
+        try {
+            for (String kitName : ShiftStats.getAPI().getKits(player.getUniqueId())) {
+                if (kitName.equalsIgnoreCase(name)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database to retrieve kits!");
+            return false;
+        }
     }
 
     private boolean satisfiesRequirements(Player player) {
