@@ -17,10 +17,10 @@ public class Kit {
     private ItemStack leggings;
     private ItemStack boots;
     private Requirement requirement;
-    private int requiredLevel;
+    private boolean levelRequirement;
     private KitGroup kitGroup;
 
-    protected Kit(String name, KitGroup kitGroup, Requirement requirement, Map<Integer, ItemStack> contents,
+    protected Kit(String name, KitGroup kitGroup, boolean levelRequirement, Requirement requirement, Map<Integer, ItemStack> contents,
                   ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         this.name = name;
         this.requirement = requirement;
@@ -30,15 +30,16 @@ public class Kit {
         this.leggings = leggings;
         this.boots = boots;
         this.kitGroup = kitGroup;
-        this.requiredLevel = kitGroup.getLevel(this) - 1;
+        this.levelRequirement = levelRequirement;
     }
 
     protected boolean trySelect(Player player) {
         boolean canSelect = false;
 
         if (has(player)) canSelect = true;
-        else if (canUnlock(player)) {
-            player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with " + requirement.getDescription());
+        else if (satisfiesRequirements(player)) {
+            player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with "
+                    + requirement.getDescription());
             if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
             // ShiftStats.getAPI().addKits(player.getUniqueId(), name);
             canSelect = true;
@@ -50,13 +51,16 @@ public class Kit {
             return true;
         } else {
             player.sendMessage(ChatColor.RED + "You do not satisfy the requirements to unlock this kit!");
-            player.sendMessage(ChatColor.DARK_RED + "You need " + requirement.getDescription() + (requiredLevel == 0 ? "" : " and level " + requiredLevel) + " to unlock this kit.");
+            player.sendMessage(ChatColor.DARK_RED + "You need " + requirement.getDescription()
+                    + (!levelRequirement ? ""
+                    : " and level " + (kitGroup.getLevel(this) - 1))
+                    + " to unlock this kit.");
             return false;
         }
     }
 
-    protected boolean canUnlock(Player player) {
-        return requirement.satisfies(player) && (requiredLevel == 0 || kitGroup.getKit(requiredLevel).has(player));
+    protected boolean satisfiesRequirements(Player player) {
+        return requirement.satisfies(player) && satisfiesLevelRequirement(player);
     }
 
     protected boolean has(Player player) {
@@ -71,8 +75,10 @@ public class Kit {
         inventory.setChestplate(chestplate);
         inventory.setLeggings(leggings);
         inventory.setBoots(boots);
-        for (int slot : contents.keySet()) {
-            inventory.setItem(slot, contents.get(slot));
-        }
+        for (int slot : contents.keySet()) inventory.setItem(slot, contents.get(slot));
+    }
+
+    private boolean satisfiesLevelRequirement(Player player) {
+        return !levelRequirement || kitGroup.getKit(kitGroup.getLevel(this) - 1).has(player);
     }
 }
