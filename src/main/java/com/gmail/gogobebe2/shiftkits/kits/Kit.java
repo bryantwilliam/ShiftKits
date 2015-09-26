@@ -1,7 +1,5 @@
 package com.gmail.gogobebe2.shiftkits.kits;
 
-import com.gmail.gogobebe2.shiftkits.requirements.Cost;
-import com.gmail.gogobebe2.shiftkits.requirements.Requirement;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
