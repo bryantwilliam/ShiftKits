@@ -19,15 +19,24 @@ public abstract class Kit {
         this.requirement = requirement;
     }
 
-    protected boolean tryUnlock(Player player) {
-        if (canUnlock(player)) {
+    protected boolean trySelect(Player player) {
+        boolean canSelect = false;
+
+        if (has(player)) canSelect = true;
+        else if (canUnlock(player)) {
             player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with " + requirement.getDescription());
             if (requirement instanceof Cost) {
                 ((Cost) requirement).takeXP(player);
             }
-            return true;
+            // TODO: Unlock kit using ShiftStats.
+            canSelect = true;
         }
-        else {
+
+        if (canSelect) {
+            // TODO: Select the kit.
+            player.sendMessage(ChatColor.GREEN + name + " kit selected.");
+            return true;
+        } else {
             player.sendMessage(ChatColor.RED + "You do not satisfy the requirements to unlock this kit!");
             player.sendMessage(ChatColor.DARK_RED + "You need " + requirement.getDescription() + " to unlock this kit.");
             return false;
@@ -36,5 +45,10 @@ public abstract class Kit {
 
     protected boolean canUnlock(Player player) {
         return requirement.has(player);
+    }
+
+    protected boolean has(Player player) {
+        // TODO: check if player has this kit using ShiftStats.
+        return false;
     }
 }
