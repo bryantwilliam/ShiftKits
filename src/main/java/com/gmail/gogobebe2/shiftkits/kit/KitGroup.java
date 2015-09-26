@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftkits.kits;
+package com.gmail.gogobebe2.shiftkits.kit;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 public class KitGroup {
     private Map<Integer, Kit> kits = new HashMap<>();
 
-    protected void addKit(int level, Kit kit) throws IllegalArgumentException {
+    public void addKit(int level, Kit kit) throws IllegalArgumentException {
         if (level <= 0) throw new IllegalArgumentException("Can't have a level that is 0 or below!");
         kits.put(level, kit);
     }

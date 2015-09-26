@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftkits.kits;
+package com.gmail.gogobebe2.shiftkits.kit;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,7 +31,9 @@ public class Kit {
         this.levelRequirement = levelRequirement;
     }
 
-    protected boolean trySelect(Player player) {
+    // TODO: remove warning suppression once ShiftStats has been sorted out.
+    @SuppressWarnings("ConstantConditions")
+    public boolean trySelect(Player player) {
         boolean canSelect = false;
 
         if (has(player)) canSelect = true;
@@ -57,15 +59,6 @@ public class Kit {
         }
     }
 
-    protected boolean satisfiesRequirements(Player player) {
-        return requirement.satisfies(player) && satisfiesLevelRequirement(player);
-    }
-
-    protected boolean has(Player player) {
-        // return ShiftStats.getAPI().getKits(Player.getUniqueId()).contains(name);
-        return true;
-    }
-
     private void select(Player player) {
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
@@ -74,6 +67,15 @@ public class Kit {
         inventory.setLeggings(leggings);
         inventory.setBoots(boots);
         for (int slot : contents.keySet()) inventory.setItem(slot, contents.get(slot));
+    }
+
+    private boolean has(Player player) {
+        // return ShiftStats.getAPI().getKits(Player.getUniqueId()).contains(name);
+        return true;
+    }
+
+    private boolean satisfiesRequirements(Player player) {
+        return requirement.satisfies(player) && satisfiesLevelRequirement(player);
     }
 
     private boolean satisfiesLevelRequirement(Player player) {

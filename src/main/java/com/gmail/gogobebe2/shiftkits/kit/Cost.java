@@ -1,4 +1,4 @@
-package com.gmail.gogobebe2.shiftkits.kits;
+package com.gmail.gogobebe2.shiftkits.kit;
 
 import org.bukkit.entity.Player;
 
