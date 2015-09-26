@@ -2,6 +2,7 @@ package com.gmail.gogobebe2.shiftkits.kit;
 
 import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -12,16 +13,16 @@ import java.util.Map;
 public class Kit {
     private String name;
     private Map<Integer, ItemStack> contents;
-    private ItemStack helmet;
-    private ItemStack chestplate;
-    private ItemStack leggings;
-    private ItemStack boots;
+    private Material helmet;
+    private Material chestplate;
+    private Material leggings;
+    private Material boots;
     private Requirement requirement;
     private boolean levelRequirement;
     private KitGroup kitGroup;
 
     protected Kit(String name, KitGroup kitGroup, boolean levelRequirement, Requirement requirement, Map<Integer, ItemStack> contents,
-                  ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+               Material helmet, Material chestplate, Material leggings, Material boots) {
         this.name = name;
         this.requirement = requirement;
         this.contents = contents;
@@ -35,20 +36,19 @@ public class Kit {
 
     public boolean trySelect(Player player) {
         boolean canSelect = false;
-
-        if (has(player)) canSelect = true;
-        else if (satisfiesRequirements(player)) {
-            player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with "
-                    + requirement.getDescription());
-            if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
-            try {
+        try {
+            if (has(player)) canSelect = true;
+            else if (satisfiesRequirements(player)) {
+                player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with "
+                        + requirement.getDescription());
+                if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
                 ShiftStats.getAPI().addKit(player.getUniqueId(), name);
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-                player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database to retrieve kits!");
-                return false;
+                canSelect = true;
             }
-            canSelect = true;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database to retrieve kits!");
+            return false;
         }
 
         if (canSelect) {
@@ -68,10 +68,10 @@ public class Kit {
     private void select(Player player) {
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
-        inventory.setHelmet(helmet);
-        inventory.setChestplate(chestplate);
-        inventory.setLeggings(leggings);
-        inventory.setBoots(boots);
+        inventory.setHelmet(new ItemStack(helmet, 1));
+        inventory.setChestplate(new ItemStack(chestplate, 1));
+        inventory.setLeggings(new ItemStack(leggings, 1));
+        inventory.setBoots(new ItemStack(boots, 1));
         for (int slot : contents.keySet()) inventory.setItem(slot, contents.get(slot));
     }
 
@@ -90,7 +90,7 @@ public class Kit {
         }
     }
 
-    private boolean satisfiesRequirements(Player player) {
+    private boolean satisfiesRequirements(Player player) throws SQLException, ClassNotFoundException {
         return requirement.satisfies(player) && satisfiesLevelRequirement(player);
     }
 

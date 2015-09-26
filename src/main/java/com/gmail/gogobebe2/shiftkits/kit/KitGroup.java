@@ -1,14 +1,23 @@
 package com.gmail.gogobebe2.shiftkits.kit;
 
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class KitGroup {
     private Map<Integer, Kit> kits = new HashMap<>();
+    private String name;
 
-    public void addKit(int level, Kit kit) throws IllegalArgumentException {
+    public KitGroup(String name) {
+        this.name = name;
+    }
+
+    public void addKit(int level, boolean levelRequirement, Requirement requirement, Map<Integer, ItemStack> contents,
+                       Material helmet, Material chestplate, Material leggings, Material boots) throws IllegalArgumentException {
         if (level <= 0) throw new IllegalArgumentException("Can't have a level that is 0 or below!");
-        kits.put(level, kit);
+        kits.put(level, new Kit(name, this, levelRequirement, requirement, contents, helmet, chestplate, leggings, boots));
     }
 
     protected int getLevel(Kit kit) throws NullPointerException {
