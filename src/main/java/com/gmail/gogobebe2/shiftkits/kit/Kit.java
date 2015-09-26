@@ -52,7 +52,7 @@ public class Kit {
         }
 
         if (canSelect) {
-            select(player);
+            use(player);
             player.sendMessage(ChatColor.GREEN + name + " kit selected.");
             return true;
         } else {
@@ -65,7 +65,7 @@ public class Kit {
         }
     }
 
-    private void select(Player player) {
+    private void use(Player player) {
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
         inventory.setHelmet(new ItemStack(helmet, 1));
