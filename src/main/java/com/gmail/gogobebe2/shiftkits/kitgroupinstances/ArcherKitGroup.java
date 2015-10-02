@@ -50,7 +50,7 @@ public class ArcherKitGroup extends ThreeLeveledKitGroup {
     }
 
     private void addLevel(Map<Integer, ItemStack> items, final int KILLS_WITH_BOW, int level) {
-        getKitGroup().addKit(level, level != 1, new Requirement("kill " + KILLS_WITH_BOW + " players with a bow") {
+        getKitGroup().addKit(level, new Requirement("to kill " + KILLS_WITH_BOW + " players with a bow") {
             @Override
             protected boolean satisfies(Player player) throws SQLException, ClassNotFoundException {
                 return ShiftStats.getAPI().getKills(player.getUniqueId(), ShiftStats.KillMethod.BOW) >= KILLS_WITH_BOW;

@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 public class Cost extends Requirement {
     private int price;
 
-    protected Cost(String description, int price) {
-        super(description);
+    public Cost(int price) {
+        super(price + " XP");
         this.price = price;
     }
 

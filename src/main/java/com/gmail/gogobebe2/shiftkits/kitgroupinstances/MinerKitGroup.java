@@ -37,9 +37,9 @@ public class MinerKitGroup extends ThreeLeveledKitGroup {
 
     private void addLevel(ItemStack pickaxe, final int ORES_MINED, int level) {
         Map<Integer, ItemStack> items = new HashMap<>();
-        items.put(0, new ItemStack(Material.WOOD_SWORD));
+        items.put(0, new ItemStack(Material.WOOD_SWORD, 1));
         items.put(1, pickaxe);
-        getKitGroup().addKit(level, level != 1, new Requirement("mine " + ORES_MINED + " ores - Not including the AlphaCore") {
+        getKitGroup().addKit(level, new Requirement("to mine " + ORES_MINED + " ores - Not including the AlphaCore") {
             @Override
             protected boolean satisfies(Player player) throws SQLException, ClassNotFoundException {
                 return ShiftStats.getAPI().getOresMined(player.getUniqueId()) >= ORES_MINED;

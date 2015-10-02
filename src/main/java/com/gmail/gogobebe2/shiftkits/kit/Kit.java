@@ -57,7 +57,7 @@ public class Kit {
             return true;
         } else {
             player.sendMessage(ChatColor.RED + "You do not satisfy the requirements to unlock this kit!");
-            player.sendMessage(ChatColor.DARK_RED + "You need " + requirement.getDescription()
+            player.sendMessage(ChatColor.DARK_RED + "You need" + requirement.getDescription()
                     + (!levelRequirement ? ""
                     : " and level " + (kitGroup.getLevel(this) - 1))
                     + " to unlock this kit.");

@@ -11,6 +11,9 @@ public final class KitGroupInstances {
     public static List<KitGroup> getInstances() {
         if (kitGroups.isEmpty()) {
             kitGroups.add(new ArcherKitGroup().getKitGroup());
+            kitGroups.add(new MinerKitGroup().getKitGroup());
+            kitGroups.add(new SwordsmanKitGroup().getKitGroup());
+            kitGroups.add(new RogueKitGroup().getKitGroup());
         }
         return kitGroups;
     }
