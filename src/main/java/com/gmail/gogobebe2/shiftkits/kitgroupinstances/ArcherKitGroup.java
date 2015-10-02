@@ -20,6 +20,7 @@ public class ArcherKitGroup extends ThreeLeveledKitGroup {
         addLevel3();
     }
 
+    @Override
     protected void addLevel1() {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(Material.BOW, 1));
@@ -28,6 +29,7 @@ public class ArcherKitGroup extends ThreeLeveledKitGroup {
         addLevel(items, 50, 1);
     }
 
+    @Override
     protected void addLevel2() {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(Material.BOW, 1));
@@ -36,6 +38,7 @@ public class ArcherKitGroup extends ThreeLeveledKitGroup {
         addLevel(items, 200, 2);
     }
 
+    @Override
     protected void addLevel3() {
         Map<Integer, ItemStack> items = new HashMap<>();
         ItemStack bow = new ItemStack(Material.BOW, 1);
@@ -47,11 +50,11 @@ public class ArcherKitGroup extends ThreeLeveledKitGroup {
     }
 
     private void addLevel(Map<Integer, ItemStack> items, final int KILLS_WITH_BOW, int level) {
-        getKitGroup().addKit(level, false, new Requirement("kill " + KILLS_WITH_BOW + " players with a bow") {
+        getKitGroup().addKit(level, level != 1, new Requirement("kill " + KILLS_WITH_BOW + " players with a bow") {
             @Override
             protected boolean satisfies(Player player) throws SQLException, ClassNotFoundException {
                 return ShiftStats.getAPI().getKills(player.getUniqueId(), ShiftStats.KillMethod.BOW) >= KILLS_WITH_BOW;
             }
-        }, items, Material.AIR, Material.AIR, Material.AIR, Material.AIR);
+        }, items);
     }
 }

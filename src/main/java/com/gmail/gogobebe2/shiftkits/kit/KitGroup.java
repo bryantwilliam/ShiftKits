@@ -20,6 +20,9 @@ public class KitGroup {
         kits.put(level, new Kit(name + level, this, levelRequirement, requirement, contents, helmet, chestplate, leggings, boots));
     }
 
+    public void addKit(int level, boolean levelRequirement, Requirement requirement, Map<Integer, ItemStack> contents) throws IllegalArgumentException {
+        addKit(level, levelRequirement, requirement, contents, Material.AIR, Material.AIR, Material.AIR, Material.AIR);
+    }
     protected int getLevel(Kit kit) throws NullPointerException {
         for (int level : kits.keySet()) if (kits.get(level).equals(kit)) return level;
         throw new NullPointerException("Can't find kit " + kit + "!");
