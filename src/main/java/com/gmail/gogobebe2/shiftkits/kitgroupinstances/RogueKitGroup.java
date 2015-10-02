@@ -35,10 +35,10 @@ public class RogueKitGroup extends ThreeLeveledKitGroup {
 
         ItemStack potion = new ItemStack(Material.POTION, poisonPotionAmount);
 
-        final short tier1SplashPoisonType = 16388;
-        final short tier2SplashPoisonType = 16420;
-        if (poisonPotionLevel == 1) potion.setDurability(tier1SplashPoisonType);
-        else potion.setDurability(tier2SplashPoisonType);
+        final short TIER1_SPLASH_POISON_METADATA = 16388;
+        final short TIER2_SPLASH_POISON_METADATA = 16420;
+        if (poisonPotionLevel == 1) potion.setDurability(TIER1_SPLASH_POISON_METADATA);
+        else potion.setDurability(TIER2_SPLASH_POISON_METADATA);
 
         items.put(2, potion);
 
