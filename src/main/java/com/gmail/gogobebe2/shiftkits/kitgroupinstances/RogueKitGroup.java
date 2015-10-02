@@ -35,6 +35,7 @@ public class RogueKitGroup extends ThreeLeveledKitGroup {
 
         ItemStack potion = new ItemStack(Material.POTION, poisonPotionAmount);
 
+        // http://minecraft-ids.grahamedgecombe.com/potion-calculator
         final short TIER1_SPLASH_POISON_METADATA = 16388;
         final short TIER2_SPLASH_POISON_METADATA = 16420;
         if (poisonPotionLevel == 1) potion.setDurability(TIER1_SPLASH_POISON_METADATA);
