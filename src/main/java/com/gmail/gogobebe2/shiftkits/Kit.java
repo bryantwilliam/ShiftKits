@@ -1,6 +1,5 @@
 package com.gmail.gogobebe2.shiftkits;
 
-import com.gmail.gogobebe2.shiftkits.requirements.Cost;
 import com.gmail.gogobebe2.shiftkits.requirements.Requirement;
 import com.gmail.gogobebe2.shiftstats.ShiftStats;
 import org.bukkit.ChatColor;
@@ -50,44 +49,7 @@ public class Kit {
         this.name = level + "-" + name;
     }
 
-    public boolean tryClick(Player player) {
-        boolean canSelect;
-        try {
-            if (has(player)) canSelect = true;
-            canSelect = tryBuy(player);
-
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            player.sendMessage(ChatColor.RED + "Error! Can't retrieve kits from SQL database!");
-            return false;
-        }
-
-        if (canSelect) {
-            use(player);
-            player.sendMessage(ChatColor.GREEN + name + " kit selected.");
-            return true;
-        } else {
-            player.sendMessage(ChatColor.RED + "You do not satisfy the requirements to unlock this kit!");
-            player.sendMessage(ChatColor.DARK_RED + "You need to have " + requirement.getDescription()
-                    + (level != 3 ? ""
-                    : " and level " + (level - 1))
-                    + " to unlock this kit.");
-            return false;
-        }
-    }
-
-    private boolean tryBuy(Player player) throws SQLException, ClassNotFoundException {
-        if (requirement.satisfies(player)) {
-            player.sendMessage(ChatColor.GREEN + "You just unlocked the " + name + " kit with "
-                    + requirement.getDescription());
-            if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
-            ShiftStats.getAPI().addKit(player.getUniqueId(), name);
-            return true;
-        }
-        return false;
-    }
-
-    private void use(Player player) {
+    private void apply(Player player) {
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
         inventory.setHelmet(new ItemStack(helmet, 1));
@@ -99,11 +61,8 @@ public class Kit {
 
     private boolean has(Player player) {
         try {
-            for (String kitName : ShiftStats.getAPI().getKits(player.getUniqueId())) {
-                if (kitName.equalsIgnoreCase(name)) {
-                    return true;
-                }
-            }
+            for (String kitName : ShiftStats.getAPI().getKits(player.getUniqueId()))
+                if (kitName.equalsIgnoreCase(name)) return true;
             return false;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
