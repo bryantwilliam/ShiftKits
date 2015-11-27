@@ -1,33 +1,36 @@
-package com.gmail.gogobebe2.shiftkits.kitgroupinstances;
+package com.gmail.gogobebe2.shiftkits.kitgroups;
 
-import com.gmail.gogobebe2.shiftkits.kit.Cost;
+import com.gmail.gogobebe2.shiftkits.Kit;
+import com.gmail.gogobebe2.shiftkits.requirements.Cost;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RogueKitGroup extends ThreeLeveledKitGroup {
-    protected RogueKitGroup() {
-        super("Rogue");
+public class RogueKitGroup implements KitGroup {
+
+    @Override
+    public Kit getLevel1() {
+        return getLevel(2, 1, 10000, 1);
     }
 
     @Override
-    protected void addLevel1() {
-        addLevel(2, 1, 10000, 1);
+    public Kit getLevel2() {
+        return getLevel(5, 1, 25000, 2);
     }
 
     @Override
-    protected void addLevel2() {
-        addLevel(5, 1, 25000, 2);
+    public Kit getLevel3() {
+        return getLevel(7, 2, 60000, 3);
     }
 
     @Override
-    protected void addLevel3() {
-        addLevel(7, 2, 60000, 3);
+    public String getName() {
+        return "Rogue";
     }
 
-    private void addLevel(int poisonPotionAmount, int poisonPotionLevel, int XP_REQUIRED, int level) {
+    private Kit getLevel(int poisonPotionAmount, int poisonPotionLevel, int XP_REQUIRED, int level) {
         Map<Integer, ItemStack> items = new HashMap<>();
 
         items.put(0, new ItemStack(Material.WOOD_SWORD, 1));
@@ -43,6 +46,6 @@ public class RogueKitGroup extends ThreeLeveledKitGroup {
 
         items.put(2, potion);
 
-        getKitGroup().addKit(level, new Cost(XP_REQUIRED), items);
+        return new Kit(getName(), level, new Cost(XP_REQUIRED), items, Material.SPIDER_EYE);
     }
 }

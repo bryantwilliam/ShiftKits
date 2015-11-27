@@ -31,5 +31,14 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: com.gmail.gogobebe2:xcore-with-dependencies:LATEST">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/src/libs/xcore-1.0-jar-with-dependencies.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

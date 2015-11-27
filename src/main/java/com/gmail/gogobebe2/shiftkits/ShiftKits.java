@@ -1,6 +1,6 @@
 package com.gmail.gogobebe2.shiftkits;
 
-import com.gmail.gogobebe2.shiftkits.kitgroupinstances.KitGroupInstances;
+import com.gmail.gogobebe2.shiftkits.kitgroups.KitGroupInstances;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ShiftKits extends JavaPlugin {
