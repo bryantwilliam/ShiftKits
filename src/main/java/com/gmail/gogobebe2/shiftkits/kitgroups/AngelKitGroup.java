@@ -45,12 +45,14 @@ public class AngelKitGroup implements KitGroup {
         items.put(1, new ItemStack(Material.WOOD_SWORD, 1));
         items.put(2, new ItemStack(Material.BEACON, beacons));
 
-        final String AZURE_BLUET_DISPLAYNAME = ChatColor.AQUA + "" + ChatColor.ITALIC + "Azure Bluet";
+        final String MEDICINAL_FLOWER_DISPLAYNAME = ChatColor.AQUA + "" + ChatColor.ITALIC + "Medicinal Flower";
 
         if (level == 3) {
             ItemStack azureBluet = new ItemStack(Material.RED_ROSE, 3);
+            azureBluet.setDurability((short) 3);
+            // 3 is Azure Bluet.
             ItemMeta meta = azureBluet.getItemMeta();
-            meta.setDisplayName(AZURE_BLUET_DISPLAYNAME);
+            meta.setDisplayName(MEDICINAL_FLOWER_DISPLAYNAME);
 
             items.put(3, azureBluet);
         }
@@ -84,14 +86,13 @@ public class AngelKitGroup implements KitGroup {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
-                if ((event.getAction() == Action.RIGHT_CLICK_BLOCK
-                        || event.getAction() == Action.RIGHT_CLICK_AIR
-                        || item.getType() == Material.RED_ROSE)
-                        && item.getItemMeta().getDisplayName().equals(AZURE_BLUET_DISPLAYNAME)) {
+                if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+                        && item.getType() == Material.RED_ROSE && item.getDurability() == 3
+                        && item.getItemMeta().getDisplayName().equals(MEDICINAL_FLOWER_DISPLAYNAME)) {
                     item.setAmount(item.getAmount() - 1);
                     Player player = event.getPlayer();
                     player.setHealth(20);
-                    player.sendMessage(ChatColor.AQUA + "You feel refreshed from the magic of the Azure Bluet...");
+                    player.sendMessage(ChatColor.AQUA + "You feel refreshed from the magic of the medicinal flower...");
                     event.setCancelled(true);
                 }
             }
