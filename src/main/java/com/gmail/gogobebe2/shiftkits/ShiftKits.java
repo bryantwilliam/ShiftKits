@@ -4,7 +4,7 @@ import com.gmail.gogobebe2.shiftkits.kitgroups.KitGroupInstances;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ShiftKits extends JavaPlugin {
-    protected static ShiftKits instance;
+    public static ShiftKits instance;
 
     @Override
     public void onEnable() {

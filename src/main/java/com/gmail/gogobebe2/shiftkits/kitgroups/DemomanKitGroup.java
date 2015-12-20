@@ -5,9 +5,12 @@ import com.gmail.gogobebe2.shiftkits.MagicKit;
 import com.gmail.gogobebe2.shiftkits.requirements.Cost;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Firework;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -68,32 +71,52 @@ public class DemomanKitGroup implements KitGroup {
         }
 
         return new MagicKit(getName(), level, new Cost(cost), items, Material.FIREWORK, new Listener() {
+
+            private RocketGunType getRocketType(String displayName) {
+                if (displayName.equals(ROCKET_LAUNCHER_DISPLAYNAME))
+                    return RocketGunType.ROCKET_LAUNCHER;
+                else if (displayName.equals(MIRV_DISPLAYNAME)) return RocketGunType.MIRV;
+                return null;
+            }
+
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
-                if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) && item.getType() == Material.FIREWORK) {
-                    String itemDisplayName = item.getItemMeta().getDisplayName();
-                    RocketGunType rocketGunType = null;
-                    if (itemDisplayName.equals(ROCKET_LAUNCHER_DISPLAYNAME))
-                        rocketGunType = RocketGunType.ROCKET_LAUNCHER;
-                    else if (itemDisplayName.equals(MIRV_DISPLAYNAME)) rocketGunType = RocketGunType.MIRV;
+                if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+                        && item.getType() == Material.FIREWORK) {
 
-                    if (rocketGunType == RocketGunType.MIRV || rocketGunType == RocketGunType.ROCKET_LAUNCHER) {
-                        fire(rocketGunType);
+                    String itemDisplayName = item.getItemMeta().getDisplayName();
+
+                    if (getRocketType(itemDisplayName) != null) {
+
+                        Player player = event.getPlayer();
+
+                        Firework firework = player.getWorld().spawn(player.getLocation().add(0, 1, 0), Firework.class);
+                        firework.setCustomName(itemDisplayName);
+                        firework.setVelocity(player.getLocation().getDirection().normalize());
+
                         event.setCancelled(true);
                     }
                 }
             }
 
+            @EventHandler
+            private void onEntityColide(EntityChangeBlockEvent event) {
+                if (event.getEntity() instanceof Firework) {
+                    Firework firework = (Firework) event.getEntity();
+
+                    RocketGunType rocketGunType = getRocketType(firework.getCustomName());
+                    if (rocketGunType != null && event.getTo() != Material.AIR) {
+                        firework.detonate();
+                        // TODO: create tnt explosion.
+                        if (rocketGunType == RocketGunType.MIRV) {
+                            // TODO: do MIRV cluster logic shit.
+                        }
+                    }
+                }
+            }
+
         });
-    }
-
-    private void fire(RocketGunType rocketGunType) {
-        // TODO: do shooting rocket effects and create explosion.
-        // TODO: create 1 explosion on impact.
-        if (rocketGunType == RocketGunType.MIRV) return; // TODO: do MIRV cluster logic shit.
-
-
     }
 
     private enum RocketGunType {
