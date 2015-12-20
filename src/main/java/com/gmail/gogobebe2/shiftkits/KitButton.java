@@ -5,7 +5,12 @@ import com.gmail.gogobebe2.shiftkits.kitgroups.KitGroup;
 public class KitButton {
     private KitGroup kitGroup;
     private int level;
-    private Kit kit = initKit();
+
+    private void updateButton() {
+
+    }
+
+    /*private Kit kit = initKit();*/
 
     /*public boolean tryClick(Player player) {
         boolean canSelect;
@@ -44,9 +49,9 @@ public class KitButton {
         return false;
     }*/
 
-    private Kit initKit() {
+/*    private Kit initKit() {
         if (level == 1) return kitGroup.getLevel1();
         else if (level == 2) return kitGroup.getLevel2();
         else return kitGroup.getLevel3();
-    }
+    }*/
 }
