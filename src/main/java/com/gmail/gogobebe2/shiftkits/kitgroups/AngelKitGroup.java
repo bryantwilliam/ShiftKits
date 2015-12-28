@@ -57,7 +57,7 @@ public class AngelKitGroup implements KitGroup {
             items.put(3, azureBluet);
         }
 
-        return new MagicKit(getName(), level, new Cost(cost), items, Material.BEACON, new Listener() {
+        return new MagicKit(getName(), (short) level, new Cost(cost), items, Material.BEACON, new Listener() {
             @EventHandler
             private void onBlockPlace(BlockPlaceEvent event) {
                 Block block = event.getBlockPlaced();

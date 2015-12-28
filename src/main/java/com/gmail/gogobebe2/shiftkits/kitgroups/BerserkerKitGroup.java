@@ -61,7 +61,7 @@ public class BerserkerKitGroup implements KitGroup {
 
         items.put(2, roseBud);
 
-        return new MagicKit(getName(), level, new Cost(cost), items, Material.RED_ROSE, new Listener() {
+        return new MagicKit(getName(), (short) level, new Cost(cost), items, Material.RED_ROSE, new Listener() {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();

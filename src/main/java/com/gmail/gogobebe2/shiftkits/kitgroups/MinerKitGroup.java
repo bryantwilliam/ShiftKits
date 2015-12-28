@@ -49,6 +49,6 @@ public class MinerKitGroup implements KitGroup {
             }
         };
 
-        return new Kit(getName(), level, requirement, items, Material.DIAMOND_PICKAXE);
+        return new Kit(getName(), (short) level, requirement, items, Material.DIAMOND_PICKAXE);
     }
 }

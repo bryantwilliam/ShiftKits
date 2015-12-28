@@ -40,6 +40,6 @@ public class SwordsmanKitGroup implements KitGroup {
         items.put(0, sword);
 
         items.put(1, new ItemStack(Material.STONE_PICKAXE));
-        return new Kit(getName(), level, new Cost(XP_REQUIRED), items, Material.STONE_PICKAXE);
+        return new Kit(getName(), (short) level, new Cost(XP_REQUIRED), items, Material.STONE_PICKAXE);
     }
 }

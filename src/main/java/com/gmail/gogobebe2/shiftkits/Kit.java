@@ -7,30 +7,28 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Kit {
-    private String name;
-    private int level;
+    private String id;
+    private short level;
     private Map<Integer, ItemStack> contents;
     private Material helmet;
     private Material chestplate;
     private Material leggings;
     private Material boots;
     private Requirement requirement;
-    private ItemStack icon;
+    private Material icon;
 
-    public Kit(String name, int level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon) {
-        this(name, level, requirement, contents, null, null, null, null, icon);
+    public Kit(String id, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon) {
+        this(id, level, requirement, contents, null, null, null, null, icon);
     }
 
-    public Kit(String name, int level, Requirement requirement, Map<Integer, ItemStack> contents,
+    public Kit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents,
                Material helmet, Material chestplate, Material leggings, Material boots, Material icon) {
+        this.id = level + "-" + name;
         this.level = level;
         this.requirement = requirement;
         this.contents = contents;
@@ -38,15 +36,7 @@ public class Kit {
         this.chestplate = chestplate;
         this.leggings = leggings;
         this.boots = boots;
-        this.icon = new ItemStack(icon, 1);
-        ItemMeta meta = this.icon.getItemMeta();
-        meta.setDisplayName(ChatColor.AQUA + "" + ChatColor.BOLD + name + ChatColor.BLUE + " - Level " + level);
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.RED + "Requirement:");
-        lore.add(ChatColor.DARK_RED + requirement.getDescription());
-
-        // This needs to be below the icon creation:
-        this.name = level + "-" + name;
+        this.icon = icon;
     }
 
     private void apply(Player player) {
@@ -61,13 +51,29 @@ public class Kit {
 
     private boolean has(Player player) {
         try {
-            for (String kitName : ShiftStats.getAPI().getKits(player.getUniqueId()))
-                if (kitName.equalsIgnoreCase(name)) return true;
+            for (String kitID : ShiftStats.getAPI().getKits(player.getUniqueId()))
+                if (kitID.equalsIgnoreCase(id)) return true;
             return false;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database to retrieve kits!");
             return false;
         }
+    }
+
+    protected Material getIcon() {
+        return this.icon;
+    }
+
+    protected Requirement getRequirement() {
+        return this.requirement;
+    }
+
+    protected String getId() {
+        return this.id;
+    }
+
+    protected short getLevel() {
+        return this.level;
     }
 }

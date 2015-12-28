@@ -64,7 +64,7 @@ public class NightcrawlerKitGroup implements KitGroup {
         items.put(maxSlot + 1, new ItemStack(Material.STONE_PICKAXE, 1));
         items.put(maxSlot + 2, new ItemStack(Material.WOOD_SWORD, 1));
 
-        return new MagicKit(getName(), level, new Cost(cost), items, Material.EYE_OF_ENDER, new Listener() {
+        return new MagicKit(getName(), (short) level, new Cost(cost), items, Material.EYE_OF_ENDER, new Listener() {
             private Map<UUID, Location> lastLandOn = new HashMap<>();
 
             @EventHandler

@@ -36,6 +36,6 @@ public class CapitalistKitGroup implements KitGroup {
         items.put(2, new ItemStack(Material.GOLD_INGOT, gold));
         if (level == 3) items.put(3, new ItemStack(Material.IRON_INGOT, 2));
 
-        return new Kit(getName(), level, new Cost(xp), items, Material.GOLD_NUGGET);
+        return new Kit(getName(), (short) level, new Cost(xp), items, Material.GOLD_NUGGET);
     }
 }

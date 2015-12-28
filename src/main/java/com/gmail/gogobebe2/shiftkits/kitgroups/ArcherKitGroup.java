@@ -56,6 +56,6 @@ public class ArcherKitGroup implements KitGroup {
             }
         };
 
-        return new Kit(getName(), level, requirement, items, Material.BOW);
+        return new Kit(getName(), (short) level, requirement, items, Material.BOW);
     }
 }

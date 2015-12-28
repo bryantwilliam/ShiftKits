@@ -17,7 +17,6 @@ public abstract class Requirement {
     }
 
     /**
-     *
      * @return description - A user-friendly description of the requirements in English.
      * Will be used like "You need to have " + description + "...".
      */

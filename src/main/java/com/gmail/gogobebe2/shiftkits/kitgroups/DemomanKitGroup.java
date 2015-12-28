@@ -4,16 +4,21 @@ import com.gmail.gogobebe2.shiftkits.Kit;
 import com.gmail.gogobebe2.shiftkits.MagicKit;
 import com.gmail.gogobebe2.shiftkits.requirements.Cost;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +28,17 @@ import java.util.Map;
 public class DemomanKitGroup implements KitGroup {
     @Override
     public Kit getLevel1() {
-        return null;
+        return getLevel(2, 15000, (short) 1);
     }
 
     @Override
     public Kit getLevel2() {
-        return null;
+        return getLevel(4, 40000, (short) 2);
     }
 
     @Override
     public Kit getLevel3() {
-        return null;
+        return getLevel(6, 100000, (short) 3);
     }
 
     @Override
@@ -41,7 +46,7 @@ public class DemomanKitGroup implements KitGroup {
         return "Demoman";
     }
 
-    private Kit getLevel(int fireworksAmount, int cost, int level) {
+    private Kit getLevel(int fireworksAmount, int cost, short level) {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(Material.WOOD_PICKAXE, 1));
 
@@ -71,6 +76,7 @@ public class DemomanKitGroup implements KitGroup {
         }
 
         return new MagicKit(getName(), level, new Cost(cost), items, Material.FIREWORK, new Listener() {
+            private boolean stopNextExplosion = false;
 
             private RocketGunType getRocketType(String displayName) {
                 if (displayName.equals(ROCKET_LAUNCHER_DISPLAYNAME))
@@ -91,7 +97,7 @@ public class DemomanKitGroup implements KitGroup {
 
                         Player player = event.getPlayer();
 
-                        Firework firework = player.getWorld().spawn(player.getLocation().add(0, 1, 0), Firework.class);
+                        Firework firework = (Firework) player.getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.FIREWORK);
                         firework.setCustomName(itemDisplayName);
                         firework.setVelocity(player.getLocation().getDirection().normalize());
 
@@ -108,11 +114,43 @@ public class DemomanKitGroup implements KitGroup {
                     RocketGunType rocketGunType = getRocketType(firework.getCustomName());
                     if (rocketGunType != null && event.getTo() != Material.AIR) {
                         firework.detonate();
-                        // TODO: create tnt explosion.
+                        createExplosion(firework);
                         if (rocketGunType == RocketGunType.MIRV) {
-                            // TODO: do MIRV cluster logic shit.
+                            World world = firework.getWorld();
+                            Location location = firework.getLocation().clone();
+
+                            Vector north = new Vector(0, 0, -1);
+                            Vector east = new Vector(1, 0, 0);
+                            Vector west = new Vector(-1, 0, 0);
+                            Vector south = new Vector(0, 0, 1);
+                            Vector northE = new Vector(1, 0, -1);
+                            Vector northW = new Vector(-1, 0, -1);
+                            Vector southE = new Vector(1, 0, 1);
+                            Vector southW = new Vector(-1, 0, 1);
+
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(north);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(east);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(west);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(south);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(northE);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(northW);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(southE);
+                            world.spawnEntity(location, EntityType.PRIMED_TNT).setVelocity(southW);
                         }
                     }
+                }
+            }
+
+            private void createExplosion(Firework firework) {
+                stopNextExplosion = true;
+                firework.getWorld().createExplosion(firework.getLocation(), 4F);
+            }
+
+            @EventHandler
+            private void onEntityExplode(EntityExplodeEvent event) {
+                if (stopNextExplosion) {
+                    event.setCancelled(true);
+                    stopNextExplosion = false;
                 }
             }
 

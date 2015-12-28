@@ -46,6 +46,6 @@ public class RogueKitGroup implements KitGroup {
 
         items.put(2, potion);
 
-        return new Kit(getName(), level, new Cost(XP_REQUIRED), items, Material.SPIDER_EYE);
+        return new Kit(getName(), (short) level, new Cost(XP_REQUIRED), items, Material.SPIDER_EYE);
     }
 }
