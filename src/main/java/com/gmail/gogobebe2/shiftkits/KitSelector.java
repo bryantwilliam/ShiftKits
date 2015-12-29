@@ -59,9 +59,6 @@ public class KitSelector {
                         e.printStackTrace();
                     }
                 }
-                // TODO:
-                // check pending kits and add it to the player if the player is online and gamestate is started
-                // remove the kit selector item from their inventory.
                 if (pendingKits.containsKey(playerUUID)
                         && ShiftSpawn.getInstance().getGame().getGameState() == GameState.STARTED) {
                     Player player = Bukkit.getPlayer(playerUUID);
