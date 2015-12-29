@@ -1,14 +1,11 @@
 package com.gmail.gogobebe2.shiftkits;
 
 import com.gmail.gogobebe2.shiftkits.requirements.Requirement;
-import com.gmail.gogobebe2.shiftstats.ShiftStats;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import java.sql.SQLException;
 import java.util.Map;
 
 public class Kit {
@@ -39,7 +36,7 @@ public class Kit {
         this.icon = icon;
     }
 
-    private void apply(Player player) {
+    protected void apply(Player player) {
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
         inventory.setHelmet(new ItemStack(helmet, 1));
@@ -47,18 +44,6 @@ public class Kit {
         inventory.setLeggings(new ItemStack(leggings, 1));
         inventory.setBoots(new ItemStack(boots, 1));
         for (int slot : contents.keySet()) inventory.setItem(slot, contents.get(slot));
-    }
-
-    private boolean has(Player player) {
-        try {
-            for (String kitID : ShiftStats.getAPI().getKits(player.getUniqueId()))
-                if (kitID.equalsIgnoreCase(id)) return true;
-            return false;
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-            player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database to retrieve kits!");
-            return false;
-        }
     }
 
     protected Material getIcon() {
