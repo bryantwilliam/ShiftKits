@@ -106,7 +106,7 @@ public class KitSelector {
 
             ItemStack button = new ItemStack(kit.getIcon(), 1);
             ItemMeta meta = button.getItemMeta();
-            String displayName = ChatColor.AQUA + "" + ChatColor.BOLD + kitName + ChatColor.BLUE + " - Level " + highestLevel;
+            String displayName = ChatColor.AQUA + kitName + ChatColor.BLUE + " - Lvl " + highestLevel;
             meta.setDisplayName(displayName);
             kits.put(displayName, kit);
             button.setItemMeta(meta);
