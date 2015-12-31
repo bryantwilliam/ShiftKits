@@ -188,7 +188,7 @@ public class KitSelector {
             Player player = (Player) event.getWhoClicked();
             ItemStack button = event.getCurrentItem();
 
-            if (button != null) {
+            if (button != null && button.hasItemMeta()) {
                 Inventory inventory = event.getInventory();
                 String inventoryName = inventory.getName();
 
@@ -249,6 +249,7 @@ public class KitSelector {
                     buyOrSellMenu.setItem(6, selectButton);
                     player.closeInventory();
                     player.openInventory(buyOrSellMenu);
+                    event.setCancelled(true);
                 }
                 else if (inventoryName.contains(buyOrSellKitMenuNameSuffix)) {
                     String kitDisplayName = inventoryName.replace(buyOrSellKitMenuNameSuffix, "");
@@ -276,6 +277,7 @@ public class KitSelector {
                         }
                     }
                     player.closeInventory();
+                    event.setCancelled(true);
                 }
             }
 
