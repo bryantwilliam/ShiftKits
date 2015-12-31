@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftKits</artifactId>
-    <version>1.7.6-DEVELOPMENT-SNAPSHOT</version>
+    <version>1.7.7-DEVELOPMENT-SNAPSHOT</version>
 
     <build>
         <pluginManagement>
@@ -41,14 +41,14 @@
             <artifactId>ShiftSpawn</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftSpawn/target/ShiftSpawn-1.4.3-BETA-SNAPSHOT.jar</systemPath>
+            <systemPath>/home/william/IdeaProjects/ShiftSpawn/target/ShiftSpawn-1.4.4-BETA-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gmail.gogobebe2</groupId>
             <artifactId>ShiftStats</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.0-DEVELOPMENT-SNAPSHOT.jar</systemPath>
+            <systemPath>/home/william/IdeaProjects/ShiftStats/target/ShiftStats-1.5.1-DEVELOPMENT-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gmail.gogobebe2</groupId>
