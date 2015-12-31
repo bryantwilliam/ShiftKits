@@ -187,94 +187,98 @@ public class KitSelector {
         private static void onInventoryClick(InventoryClickEvent event) {
             Player player = (Player) event.getWhoClicked();
             ItemStack button = event.getCurrentItem();
-            Inventory inventory = event.getInventory();
-            String inventoryName = inventory.getName();
 
-            KitSelector kitSelector = kitSelectors.get(player.getUniqueId());
+            if (button != null) {
+                Inventory inventory = event.getInventory();
+                String inventoryName = inventory.getName();
 
-            String buyOrSellKitMenuNameSuffix = ChatColor.BOLD + "" + ChatColor.AQUA + "Buy or Sell Kit Menu - ";
-            String selectButtonDisplaynamePrefix = ChatColor.GREEN + "" + ChatColor.ITALIC + "Select ";
-            if (inventoryName.equals(kitSelector.kitListMenu.getName())) {
+                KitSelector kitSelector = kitSelectors.get(player.getUniqueId());
 
-                String kitDisplayName = button.getItemMeta().getDisplayName();
+                String buyOrSellKitMenuNameSuffix = ChatColor.BOLD + "" + ChatColor.AQUA + "Buy or Sell Kit Menu - ";
+                String selectButtonDisplaynamePrefix = ChatColor.GREEN + "" + ChatColor.ITALIC + "Select ";
+                if (inventoryName.equals(kitSelector.kitListMenu.getName())) {
 
-                Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
-                short level = kit.getLevel();
+                    String kitDisplayName = button.getItemMeta().getDisplayName();
 
-                Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitDisplayName);
+                    Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
+                    short level = kit.getLevel();
 
-                ItemStack buyButton = new ItemStack(Material.GOLD_INGOT, 1);
-                ItemMeta buyButtonMeta = buyButton.getItemMeta();
+                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitDisplayName);
 
-                KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(level + "-", ""));
-                assert kitGroup != null;
+                    ItemStack buyButton = new ItemStack(Material.GOLD_INGOT, 1);
+                    ItemMeta buyButtonMeta = buyButton.getItemMeta();
 
-                Kit nextKit;
+                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(level + "-", ""));
+                    assert kitGroup != null;
 
-                if (level == 0) {
-                    // He does not have the kit...
-                    buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Purchase kit");
-                    nextKit = kitGroup.getLevel1();
-                }
-                else if (level == 1 || level == 2) {
-                    // He has the kit...
-                    buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Upgrade kit");
-                    if (level == 1) nextKit = kitGroup.getLevel2();
-                    else nextKit = kitGroup.getLevel3();
-                }
-                else {
-                    buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit is already max level");
-                    buyButton.setType(Material.BARRIER);
-                    player.sendMessage(ChatColor.RED + "Error! This kit is already it's max level.");
-                    return;
-                }
+                    Kit nextKit;
 
-                List<String> buyButtonLore = new ArrayList<>();
-                buyButtonLore.add(ChatColor.GOLD + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
-                buyButtonLore.add(ChatColor.RED + "Requirement:");
-                buyButtonLore.add(ChatColor.DARK_RED + "You need to have " + nextKit.getRequirement().getDescription()
-                        + " to unlock this kit");
-
-                buyButtonMeta.setLore(buyButtonLore);
-                buyButton.setItemMeta(buyButtonMeta);
-
-                ItemStack selectButton = new ItemStack(Material.FIRE, 1);
-                ItemMeta selectButtonMeta = selectButton.getItemMeta();
-                selectButtonMeta.setDisplayName(selectButtonDisplaynamePrefix + ChatColor.RESET + kitDisplayName);
-                selectButton.setItemMeta(selectButtonMeta);
-
-                buyOrSellMenu.setItem(2, buyButton);
-                buyOrSellMenu.setItem(6, selectButton);
-                player.closeInventory();
-                player.openInventory(buyOrSellMenu);
-            }
-            else if (inventoryName.contains(buyOrSellKitMenuNameSuffix)) {
-                String kitDisplayName = inventoryName.replace(buyOrSellKitMenuNameSuffix, "");
-                Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
-                KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(kit.getLevel() + "-", ""));
-                assert kitGroup != null;
-
-                if (button.getItemMeta().getDisplayName().equals(selectButtonDisplaynamePrefix)) {
-                    pendingKits.put(player.getUniqueId(), kit);
-                    player.sendMessage(ChatColor.GREEN + "You have selected " + kitGroup.getName() + " level " + kit.getLevel());
-
-                }
-                else {
-                    if (kit.getLevel() != 3) {
-                        try {
-                            ShiftStats.getAPI().addKit(player.getUniqueId(), kit.getLevel() + "-" + kitGroup.getName());
-                            player.sendMessage(ChatColor.GREEN + "You just unlocked the level " + kit.getLevel() + " " + kitGroup.getName() + " kit!");
-                        } catch (SQLException | ClassNotFoundException e) {
-                            e.printStackTrace();
-                            player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database!");
-                        }
+                    if (level == 0) {
+                        // He does not have the kit...
+                        buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Purchase kit");
+                        nextKit = kitGroup.getLevel1();
+                    }
+                    else if (level == 1 || level == 2) {
+                        // He has the kit...
+                        buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Upgrade kit");
+                        if (level == 1) nextKit = kitGroup.getLevel2();
+                        else nextKit = kitGroup.getLevel3();
                     }
                     else {
-                        player.sendMessage(ChatColor.RED + "Error! You can't unlock this kit because it's already at it's max level!");
+                        buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit is already max level");
+                        buyButton.setType(Material.BARRIER);
+                        player.sendMessage(ChatColor.RED + "Error! This kit is already it's max level.");
+                        return;
                     }
+
+                    List<String> buyButtonLore = new ArrayList<>();
+                    buyButtonLore.add(ChatColor.GOLD + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
+                    buyButtonLore.add(ChatColor.RED + "Requirement:");
+                    buyButtonLore.add(ChatColor.DARK_RED + "You need to have " + nextKit.getRequirement().getDescription()
+                            + " to unlock this kit");
+
+                    buyButtonMeta.setLore(buyButtonLore);
+                    buyButton.setItemMeta(buyButtonMeta);
+
+                    ItemStack selectButton = new ItemStack(Material.FIRE, 1);
+                    ItemMeta selectButtonMeta = selectButton.getItemMeta();
+                    selectButtonMeta.setDisplayName(selectButtonDisplaynamePrefix + ChatColor.RESET + kitDisplayName);
+                    selectButton.setItemMeta(selectButtonMeta);
+
+                    buyOrSellMenu.setItem(2, buyButton);
+                    buyOrSellMenu.setItem(6, selectButton);
+                    player.closeInventory();
+                    player.openInventory(buyOrSellMenu);
                 }
-                player.closeInventory();
+                else if (inventoryName.contains(buyOrSellKitMenuNameSuffix)) {
+                    String kitDisplayName = inventoryName.replace(buyOrSellKitMenuNameSuffix, "");
+                    Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
+                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(kit.getLevel() + "-", ""));
+                    assert kitGroup != null;
+
+                    if (button.getItemMeta().getDisplayName().equals(selectButtonDisplaynamePrefix)) {
+                        pendingKits.put(player.getUniqueId(), kit);
+                        player.sendMessage(ChatColor.GREEN + "You have selected " + kitGroup.getName() + " level " + kit.getLevel());
+
+                    }
+                    else {
+                        if (kit.getLevel() != 3) {
+                            try {
+                                ShiftStats.getAPI().addKit(player.getUniqueId(), kit.getLevel() + "-" + kitGroup.getName());
+                                player.sendMessage(ChatColor.GREEN + "You just unlocked the level " + kit.getLevel() + " " + kitGroup.getName() + " kit!");
+                            } catch (SQLException | ClassNotFoundException e) {
+                                e.printStackTrace();
+                                player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database!");
+                            }
+                        }
+                        else {
+                            player.sendMessage(ChatColor.RED + "Error! You can't unlock this kit because it's already at it's max level!");
+                        }
+                    }
+                    player.closeInventory();
+                }
             }
+
         }
     }
 }
