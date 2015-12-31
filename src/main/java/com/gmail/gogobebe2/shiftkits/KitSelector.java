@@ -86,11 +86,14 @@ public class KitSelector {
         for (KitGroup kitGroup : KitGroupInstances.getInstances()) {
             String kitName = kitGroup.getName();
             int highestLevel = 0;
-            for (String kitID : ShiftStats.getAPI().getKits(player.getUniqueId())) {
-                if (kitID.contains(kitName)) {
-                    int tempLevel = Integer.parseInt(kitID.replace("-" + kitName, ""));
-                    if (tempLevel >= highestLevel) {
-                        highestLevel = tempLevel;
+            String[] kitColumn = ShiftStats.getAPI().getKits(player.getUniqueId());
+            if (kitColumn != null) {
+                for (String kitID : kitColumn) {
+                    if (kitID.contains(kitName)) {
+                        int tempLevel = Integer.parseInt(kitID.replace("-" + kitName, ""));
+                        if (tempLevel >= highestLevel) {
+                            highestLevel = tempLevel;
+                        }
                     }
                 }
             }
