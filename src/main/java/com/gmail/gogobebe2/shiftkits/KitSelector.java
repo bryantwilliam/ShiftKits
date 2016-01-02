@@ -194,7 +194,7 @@ public class KitSelector {
 
                 KitSelector kitSelector = kitSelectors.get(player.getUniqueId());
 
-                String buyOrSellKitMenuNameSuffix = ChatColor.BOLD + "" + ChatColor.AQUA + "Buy or Sell Kit Menu - ";
+                String buyOrSellKitMenuNameSuffix = ChatColor.BOLD + "" + ChatColor.AQUA + "Submenu - ";
                 String selectButtonDisplaynamePrefix = ChatColor.GREEN + "" + ChatColor.ITALIC + "Select ";
                 if (inventoryName.equals(kitSelector.kitListMenu.getName())) {
 
