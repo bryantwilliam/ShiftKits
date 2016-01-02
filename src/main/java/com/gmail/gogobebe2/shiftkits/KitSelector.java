@@ -203,13 +203,13 @@ public class KitSelector {
                     Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
                     short level = kit.getLevel();
 
-                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitDisplayName);
+                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(level + "-", ""));
+                    assert kitGroup != null;
+
+                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitGroup.getName());
 
                     ItemStack buyButton = new ItemStack(Material.GOLD_INGOT, 1);
                     ItemMeta buyButtonMeta = buyButton.getItemMeta();
-
-                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(level + "-", ""));
-                    assert kitGroup != null;
 
                     Kit nextKit;
 

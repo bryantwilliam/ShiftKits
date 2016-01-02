@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftKits</artifactId>
-    <version>1.8.3-DEVELOPMENT-SNAPSHOT</version>
+    <version>1.8.4-DEVELOPMENT-SNAPSHOT</version>
 
     <build>
         <pluginManagement>
