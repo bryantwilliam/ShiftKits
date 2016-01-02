@@ -23,11 +23,7 @@ public final class KitGroupInstances {
     }
 
     public static KitGroup getKitGroupInstance(String name) {
-        for (KitGroup kitGroup : kitGroups) {
-            if (kitGroup.getName().equals(name)) {
-                return kitGroup;
-            }
-        }
+        for (KitGroup kitGroup : getInstances()) if (kitGroup.getName().equals(name)) return kitGroup;
         return null;
     }
 }
