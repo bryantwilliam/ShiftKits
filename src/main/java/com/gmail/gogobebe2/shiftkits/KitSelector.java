@@ -112,6 +112,7 @@ public class KitSelector {
             button.setItemMeta(meta);
 
             kitListMenu.setItem(index, button);
+            index++;
         }
 
         player.updateInventory();
