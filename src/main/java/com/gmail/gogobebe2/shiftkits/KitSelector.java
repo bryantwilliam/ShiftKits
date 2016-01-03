@@ -207,7 +207,7 @@ public class KitSelector {
                     KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(level + "-", ""));
                     assert kitGroup != null;
 
-                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitGroup.getName());
+                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitDisplayName);
 
                     ItemStack buyButton = new ItemStack(Material.GOLD_INGOT, 1);
                     ItemMeta buyButtonMeta = buyButton.getItemMeta();
