@@ -42,7 +42,7 @@ public class MinerKitGroup implements KitGroup {
         items.put(0, new ItemStack(Material.WOOD_SWORD, 1));
         items.put(1, pickaxe);
 
-        Requirement requirement = new Requirement(ORES_MINED + " ores mined - Not including the AlphaCore") {
+        Requirement requirement = new Requirement(ORES_MINED + " ores mined (not including the AlphaCore)") {
             @Override
             public boolean satisfies(Player player) throws SQLException, ClassNotFoundException {
                 return ShiftStats.getAPI().getOresMined(player.getUniqueId()) >= ORES_MINED;

@@ -136,6 +136,17 @@ public class KitSelector {
         player.sendMessage(ChatColor.GREEN + "You just unlocked the level " + kit.getLevel() + " " + getKitName(kit) + " kit!");
     }
 
+    private boolean hasKit(Kit kit) {
+        String[] kitsColumn = new String[0];
+        try {
+            kitsColumn = ShiftStats.getAPI().getKits(Bukkit.getPlayer(playerUUID).getUniqueId());
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        for (String kitID : kitsColumn) if (kit.getId().equals(kitID)) return true;
+        return false;
+    }
+
     private static ItemStack initSelector() {
         ItemStack selector = new ItemStack(Material.EMERALD, 1);
         ItemMeta meta = selector.getItemMeta();
@@ -220,7 +231,10 @@ public class KitSelector {
 
                     Kit nextKit;
 
-                    if (level == 0) {
+                    boolean hasKit = false;
+
+
+                    if (!kitSelector.hasKit(kit)) {
                         // He does not have the kit...
                         buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Purchase kit");
                         nextKit = kitGroup.getLevel1();
@@ -262,10 +276,12 @@ public class KitSelector {
                     String kitDisplayName = inventoryName.replace(buyOrSellKitMenuNameSuffix, "");
                     Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
 
-                    if (button.getItemMeta().getDisplayName().equals(selectButtonDisplaynamePrefix)) {
-                        pendingKits.put(player.getUniqueId(), kit);
-                        player.sendMessage(ChatColor.GREEN + "You have selected " + getKitName(kit) + " level " + kit.getLevel());
-
+                    if (button.getItemMeta().getDisplayName().contains(selectButtonDisplaynamePrefix)) {
+                        if (kitSelector.hasKit(kit)) {
+                            pendingKits.put(player.getUniqueId(), kit);
+                            player.sendMessage(ChatColor.GREEN + "You have selected " + getKitName(kit) + " level " + kit.getLevel());
+                        }
+                        else player.sendMessage(ChatColor.RED + "Error, you don't own this kit!");
                     }
                     else {
                         if (kit.getLevel() != 3) {

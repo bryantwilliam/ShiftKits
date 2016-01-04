@@ -13,7 +13,7 @@ public abstract class Requirement {
      *                    Will be used like "You need to have " + description + "...".
      */
     protected Requirement(String description) {
-        this.description = description;
+        this.description = "at least " + description;
     }
 
     /**
