@@ -78,7 +78,7 @@ public class KitSelector {
     }
 
     private void updateKitListMenu() throws SQLException, ClassNotFoundException {
-        int index = 0;
+        int index = 1;
 
         Map<String, Kit> kits = new HashMap<>();
         Player player = Bukkit.getPlayer(playerUUID);
