@@ -18,6 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -69,7 +70,7 @@ public class KitSelector {
                         inventory.remove(selector);
                         player.updateInventory();
                     }
-                    player.sendMessage(ChatColor.GREEN + "Kit " + kit.getId().replace(kit.getLevel() + "-", "")
+                    player.sendMessage(ChatColor.GREEN + "Kit " + getKitName(kit)
                             + " level " + kit.getLevel() + " has been applied to you");
                     pendingKits.remove(playerUUID);
                 }
@@ -104,7 +105,8 @@ public class KitSelector {
 
             ItemStack button = new ItemStack(kit.getIcon(), 1);
             ItemMeta meta = button.getItemMeta();
-            String displayName = ChatColor.AQUA + kitName + ChatColor.BLUE + " - Lvl " + kit.getLevel();
+            meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            String displayName = ChatColor.AQUA + kitName;
             meta.setDisplayName(displayName);
             kits.put(displayName, kit);
             button.setItemMeta(meta);
@@ -130,6 +132,8 @@ public class KitSelector {
                 + requirement.getDescription());
         if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
         ShiftStats.getAPI().addKit(player.getUniqueId(), id);
+
+        player.sendMessage(ChatColor.GREEN + "You just unlocked the level " + kit.getLevel() + " " + getKitName(kit) + " kit!");
     }
 
     private static ItemStack initSelector() {
@@ -145,6 +149,10 @@ public class KitSelector {
 
     private static int roundUpToNearestMultiple(double number, double factor) {
         return (int) (Math.ceil(number / factor) * factor);
+    }
+
+    private static String getKitName(Kit kit) {
+        return kit.getId().replace(kit.getLevel() + "-", "");
     }
 
     protected static KitSelectorListener getListener() {
@@ -202,7 +210,7 @@ public class KitSelector {
                     Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
                     short level = kit.getLevel();
 
-                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(level + "-", ""));
+                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(getKitName(kit));
                     assert kitGroup != null;
 
                     Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitDisplayName);
@@ -253,19 +261,19 @@ public class KitSelector {
                 else if (inventoryName.contains(buyOrSellKitMenuNameSuffix)) {
                     String kitDisplayName = inventoryName.replace(buyOrSellKitMenuNameSuffix, "");
                     Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
-                    KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(kit.getId().replace(kit.getLevel() + "-", ""));
-                    assert kitGroup != null;
 
                     if (button.getItemMeta().getDisplayName().equals(selectButtonDisplaynamePrefix)) {
                         pendingKits.put(player.getUniqueId(), kit);
-                        player.sendMessage(ChatColor.GREEN + "You have selected " + kitGroup.getName() + " level " + kit.getLevel());
+                        player.sendMessage(ChatColor.GREEN + "You have selected " + getKitName(kit) + " level " + kit.getLevel());
 
                     }
                     else {
                         if (kit.getLevel() != 3) {
                             try {
-                                ShiftStats.getAPI().addKit(player.getUniqueId(), kit.getLevel() + "-" + kitGroup.getName());
-                                player.sendMessage(ChatColor.GREEN + "You just unlocked the level " + kit.getLevel() + " " + kitGroup.getName() + " kit!");
+                                if (kitSelector.canBuy(kit)) kitSelector.buy(kit);
+                                else player.sendMessage(ChatColor.RED + "Error! You need to have " + kit.getRequirement()
+                                            + " in order to unlock this kit!");
+
                             } catch (SQLException | ClassNotFoundException e) {
                                 e.printStackTrace();
                                 player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database!");
