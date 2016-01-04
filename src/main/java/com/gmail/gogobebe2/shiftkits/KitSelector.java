@@ -78,22 +78,20 @@ public class KitSelector {
     }
 
     private void updateKitListMenu() throws SQLException, ClassNotFoundException {
-        int index = 1;
+        int index = 0;
 
         Map<String, Kit> kits = new HashMap<>();
         Player player = Bukkit.getPlayer(playerUUID);
 
         for (KitGroup kitGroup : KitGroupInstances.getInstances()) {
             String kitName = kitGroup.getName();
-            int highestLevel = 0;
+            int highestLevel = 1;
             String[] kitColumn = ShiftStats.getAPI().getKits(player.getUniqueId());
             if (kitColumn != null) {
                 for (String kitID : kitColumn) {
                     if (kitID.contains(kitName)) {
                         int tempLevel = Integer.parseInt(kitID.replace("-" + kitName, ""));
-                        if (tempLevel >= highestLevel) {
-                            highestLevel = tempLevel;
-                        }
+                        if (tempLevel >= highestLevel) highestLevel = tempLevel;
                     }
                 }
             }
@@ -106,7 +104,7 @@ public class KitSelector {
 
             ItemStack button = new ItemStack(kit.getIcon(), 1);
             ItemMeta meta = button.getItemMeta();
-            String displayName = ChatColor.AQUA + kitName + ChatColor.BLUE + " - Lvl " + highestLevel;
+            String displayName = ChatColor.AQUA + kitName + ChatColor.BLUE + " - Lvl " + kit.getLevel();
             meta.setDisplayName(displayName);
             kits.put(displayName, kit);
             button.setItemMeta(meta);
