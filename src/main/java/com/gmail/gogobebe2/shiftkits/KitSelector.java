@@ -247,7 +247,7 @@ public class KitSelector {
                     buyButtonMeta.setLore(buyButtonLore);
                     buyButton.setItemMeta(buyButtonMeta);
 
-                    ItemStack selectButton = new ItemStack(Material.FIRE, 1);
+                    ItemStack selectButton = new ItemStack(Material.BEDROCK, 1);
                     ItemMeta selectButtonMeta = selectButton.getItemMeta();
                     selectButtonMeta.setDisplayName(selectButtonDisplaynamePrefix + ChatColor.RESET + kitDisplayName);
                     selectButton.setItemMeta(selectButtonMeta);
@@ -271,8 +271,8 @@ public class KitSelector {
                         if (kit.getLevel() != 3) {
                             try {
                                 if (kitSelector.canBuy(kit)) kitSelector.buy(kit);
-                                else player.sendMessage(ChatColor.RED + "Error! You need to have " + kit.getRequirement()
-                                            + " in order to unlock this kit!");
+                                else player.sendMessage(ChatColor.RED + "Error! You need to have "
+                                        + kit.getRequirement().getDescription() + " in order to unlock this kit!");
 
                             } catch (SQLException | ClassNotFoundException e) {
                                 e.printStackTrace();
