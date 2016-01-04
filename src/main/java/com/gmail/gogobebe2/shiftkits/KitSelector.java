@@ -142,8 +142,9 @@ public class KitSelector {
             kitsColumn = ShiftStats.getAPI().getKits(Bukkit.getPlayer(playerUUID).getUniqueId());
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
+            return false;
         }
-        for (String kitID : kitsColumn) if (kit.getId().equals(kitID)) return true;
+        if (kitsColumn != null && kitsColumn.length != 0) for (String kitID : kitsColumn) if (kit.getId().equals(kitID)) return true;
         return false;
     }
 
