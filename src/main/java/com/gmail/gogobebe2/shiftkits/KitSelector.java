@@ -301,9 +301,9 @@ public class KitSelector {
                         if (kit.getLevel() != 3) {
                             try {
                                 if (kitSelector.canBuy(kit)) kitSelector.buy(kit);
-                                else player.sendMessage(ChatColor.RED + "Error! You need to have "
-                                        + kit.getRequirement().getDescription() + " in order to unlock this kit!");
-
+                                else player.sendMessage(ChatColor.RED + (kit.needsPermission()
+                                        ? "Error! You don't have permission to buy this kit!" : "Error! You need to have "
+                                        + kit.getRequirement().getDescription() + " in order to unlock this kit!"));
                             } catch (SQLException | ClassNotFoundException e) {
                                 e.printStackTrace();
                                 player.sendMessage(ChatColor.RED + "Error! Can't connect to SQL database!");
