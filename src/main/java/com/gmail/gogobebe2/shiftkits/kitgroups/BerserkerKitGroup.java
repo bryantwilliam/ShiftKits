@@ -43,7 +43,18 @@ public class BerserkerKitGroup implements KitGroup {
         return "Berserker";
     }
 
-    private Kit getLevel(int roseBudAmount, final int strengthDuration, int cost, int level) {
+    @Override
+    public List<String> getLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
+        lore.add(ChatColor.GRAY + "Spawn with rose buds.");
+        lore.add(ChatColor.GRAY + "Left click them to activate bloodlust!");
+        lore.add(ChatColor.GRAY + "You'll gain Strength II at the cost of soe health.");
+        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more rose buds and more potent bloodlust!");
+        return lore;
+    }
+
+    private Kit getLevel(int roseBudAmount, final int strengthDuration, int xp, int level) {
         Map<Integer, ItemStack> items = new HashMap<>();
 
         items.put(0, new ItemStack(Material.STONE_PICKAXE, 1));
@@ -53,15 +64,23 @@ public class BerserkerKitGroup implements KitGroup {
         ItemMeta meta = roseBud.getItemMeta();
         final String BLOODLUST_DISPLAYNAME = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Activate Bloodlust";
         meta.setDisplayName(BLOODLUST_DISPLAYNAME);
-        final List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.RED + "Right click deals 3 hearts damage to you;");
-        lore.add(ChatColor.RED + "Gives strength II for " + strengthDuration + " seconds");
-        meta.setLore(lore);
+        final List<String> itemLore = new ArrayList<>();
+        itemLore.add(ChatColor.RED + "Right click deals 3 hearts damage to you;");
+        itemLore.add(ChatColor.RED + "Gives strength II for " + strengthDuration + " seconds");
+        meta.setLore(itemLore);
         roseBud.setItemMeta(meta);
 
         items.put(2, roseBud);
 
-        return new MagicKit(getName(), (short) level, new Cost(cost), items, Material.RED_ROSE, new Listener() {
+        Cost cost = new Cost(xp);
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GREEN + "Start with a wood pick, wood sword, and " + roseBudAmount + " rose buds.");
+        lore.add(ChatColor.GREEN + "Deals " + (level + 1) + " hearts for " + strengthDuration + " seconds of Strength II.");
+        lore.add(ChatColor.GREEN + "Purchase a rank from buy.xpcraft.com, then unlock with " + cost.getDescription() + "!");
+
+        return new MagicKit(getName(), (short) level, cost, items, Material.RED_ROSE, lore, "shiftkits."
+                + getName().toLowerCase(), new Listener() {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
@@ -69,7 +88,7 @@ public class BerserkerKitGroup implements KitGroup {
                 if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
                         && item.getType() == Material.RED_ROSE
                         && meta.getDisplayName().equals(BLOODLUST_DISPLAYNAME)
-                        && meta.getLore().equals(lore)) {
+                        && meta.getLore().equals(itemLore)) {
                     Player player = event.getPlayer();
                     player.setHealth(player.getHealth() - 6);
                     player.playEffect(EntityEffect.HURT);

@@ -2,10 +2,13 @@ package com.gmail.gogobebe2.shiftkits.kitgroups;
 
 import com.gmail.gogobebe2.shiftkits.Kit;
 import com.gmail.gogobebe2.shiftkits.requirements.Cost;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RogueKitGroup implements KitGroup {
@@ -30,6 +33,14 @@ public class RogueKitGroup implements KitGroup {
         return "Rogue";
     }
 
+    @Override
+    public List<String> getLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Spawn with splash poison potions!");
+        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more, stronger potions.");
+        return lore;
+    }
+
     private Kit getLevel(int poisonPotionAmount, int poisonPotionLevel, int XP_REQUIRED, int level) {
         Map<Integer, ItemStack> items = new HashMap<>();
 
@@ -46,6 +57,12 @@ public class RogueKitGroup implements KitGroup {
 
         items.put(2, potion);
 
-        return new Kit(getName(), (short) level, new Cost(XP_REQUIRED), items, Material.SPIDER_EYE);
+        Cost cost = new Cost(XP_REQUIRED);
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GREEN + "Start with a stone pick and " + poisonPotionLevel + " Splash 0:33 Poison potions.");
+        lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription() + "!");
+
+        return new Kit(getName(), (short) level, cost, items, Material.POISONOUS_POTATO, lore);
     }
 }

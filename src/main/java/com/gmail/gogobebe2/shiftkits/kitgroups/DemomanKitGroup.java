@@ -46,7 +46,17 @@ public class DemomanKitGroup implements KitGroup {
         return "Demoman";
     }
 
-    private Kit getLevel(int fireworksAmount, int cost, short level) {
+    @Override
+    public List<String> getLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
+        lore.add(ChatColor.GRAY + "Spawn with fireworks.");
+        lore.add(ChatColor.GRAY + "Left click them to fire rockets! Pa-sheeewwww!");
+        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more fireworks and MIRVs (a multi-rocket)!");
+        return lore;
+    }
+
+    private Kit getLevel(int fireworksAmount, int xp, short level) {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(Material.WOOD_PICKAXE, 1));
 
@@ -75,7 +85,15 @@ public class DemomanKitGroup implements KitGroup {
             items.put(2, MIRV);
         }
 
-        return new MagicKit(getName(), level, new Cost(cost), items, Material.FIREWORK, new Listener() {
+        Cost cost = new Cost(xp);
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GREEN + "Start with a wood pick " + (level == 3 ? "," : "and") + " " + fireworksAmount
+                + " fireworks" + (level == 3 ? ", and 2 MIRV" : "."));
+        lore.add(ChatColor.GREEN + "Purchase a rank from buy.xpcraft.com, then unlock with " + cost.getDescription() + "!");
+
+        return new MagicKit(getName(), level, cost, items, Material.FIREWORK, lore, "shiftkits."
+                + getName().toLowerCase(), new Listener() {
             private boolean stopNextExplosion = false;
 
             private RocketGunType getRocketType(String displayName) {

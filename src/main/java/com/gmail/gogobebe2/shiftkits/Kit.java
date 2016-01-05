@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.permissions.Permission;
 
+import java.util.List;
 import java.util.Map;
 
 public class Kit {
@@ -18,13 +20,24 @@ public class Kit {
     private Material boots;
     private Requirement requirement;
     private Material icon;
+    private List<String> lore;
+    private Permission permission;
 
-    public Kit(String id, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon) {
-        this(id, level, requirement, contents, null, null, null, null, icon);
+    public Kit(String id, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon, List<String> lore) {
+        this(id, level, requirement, contents, null, null, null, null, icon, lore, null);
+    }
+
+    public Kit(String id, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon, List<String> lore, String permissionNode) {
+        this(id, level, requirement, contents, null, null, null, null, icon, lore, permissionNode);
     }
 
     public Kit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents,
-               Material helmet, Material chestplate, Material leggings, Material boots, Material icon) {
+               Material helmet, Material chestplate, Material leggings, Material boots, Material icon, List<String> lore) {
+        this(name, level, requirement, contents, helmet, chestplate, leggings, boots, icon, lore, null);
+    }
+
+    public Kit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents,
+               Material helmet, Material chestplate, Material leggings, Material boots, Material icon, List<String> lore, String permissionNode) {
         this.id = level + "-" + name;
         this.level = level;
         this.requirement = requirement;
@@ -34,16 +47,24 @@ public class Kit {
         this.leggings = leggings;
         this.boots = boots;
         this.icon = icon;
+        this.lore = lore;
+        if (permissionNode != null) this.permission = new Permission(permissionNode);
     }
 
     protected void apply(Player player) {
         PlayerInventory inventory = player.getInventory();
         inventory.clear();
-        inventory.setHelmet(new ItemStack(helmet, 1));
-        inventory.setChestplate(new ItemStack(chestplate, 1));
-        inventory.setLeggings(new ItemStack(leggings, 1));
-        inventory.setBoots(new ItemStack(boots, 1));
+
+        if (helmet != null) inventory.setHelmet(new ItemStack(helmet, 1));
+        if (chestplate != null) inventory.setChestplate(new ItemStack(chestplate, 1));
+        if (leggings != null) inventory.setLeggings(new ItemStack(leggings, 1));
+        if (boots != null) inventory.setBoots(new ItemStack(boots, 1));
+
         for (int slot : contents.keySet()) inventory.setItem(slot, contents.get(slot));
+    }
+
+    protected List<String> getLore() {
+        return this.lore;
     }
 
     protected Material getIcon() {
@@ -52,6 +73,14 @@ public class Kit {
 
     protected Requirement getRequirement() {
         return this.requirement;
+    }
+
+    protected boolean needsPermission() {
+        return this.permission != null;
+    }
+
+    protected Permission getPermission() {
+        return this.permission;
     }
 
     protected String getId() {

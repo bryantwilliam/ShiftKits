@@ -7,6 +7,7 @@ import com.gmail.gogobebe2.shiftkits.requirements.Requirement;
 import com.gmail.gogobebe2.shiftspawn.GameState;
 import com.gmail.gogobebe2.shiftspawn.ShiftSpawn;
 import com.gmail.gogobebe2.shiftstats.ShiftStats;
+import com.google.common.base.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -108,7 +109,10 @@ public class KitSelector {
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             String displayName = ChatColor.AQUA + kitName;
             meta.setDisplayName(displayName);
+
             kits.put(displayName, kit);
+
+            meta.setLore(kitGroup.getLore());
             button.setItemMeta(meta);
 
             kitListMenu.setItem(index, button);
@@ -120,7 +124,7 @@ public class KitSelector {
     }
 
     private boolean canBuy(Kit kit) throws SQLException, ClassNotFoundException {
-        return kit.getRequirement().satisfies(Bukkit.getPlayer(playerUUID));
+        return kit.getRequirement().satisfies(Bukkit.getPlayer(playerUUID)) && (!kit.needsPermission() || Bukkit.getPlayer(playerUUID).hasPermission(kit.getPermission()));
     }
 
     private void buy(Kit kit) throws SQLException, ClassNotFoundException {
@@ -137,7 +141,7 @@ public class KitSelector {
     }
 
     private boolean hasKit(Kit kit) {
-        String[] kitsColumn = new String[0];
+        String[] kitsColumn;
         try {
             kitsColumn = ShiftStats.getAPI().getKits(Bukkit.getPlayer(playerUUID).getUniqueId());
         } catch (SQLException | ClassNotFoundException e) {
@@ -217,34 +221,35 @@ public class KitSelector {
                 String selectButtonDisplaynamePrefix = ChatColor.GREEN + "" + ChatColor.ITALIC + "Select ";
                 if (inventoryName.equals(kitSelector.kitListMenu.getName())) {
 
-                    String kitDisplayName = button.getItemMeta().getDisplayName();
+                    String buttonDisplayname = button.getItemMeta().getDisplayName();
 
-                    Kit kit = kitSelector.kitsOwned.get(kitDisplayName);
+                    Kit kit = kitSelector.kitsOwned.get(buttonDisplayname);
                     short level = kit.getLevel();
 
                     KitGroup kitGroup = KitGroupInstances.getKitGroupInstance(getKitName(kit));
                     assert kitGroup != null;
 
-                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + kitDisplayName);
+                    Inventory buyOrSellMenu = Bukkit.createInventory(null, 9, buyOrSellKitMenuNameSuffix + buttonDisplayname);
 
                     ItemStack buyButton = new ItemStack(Material.GOLD_INGOT, 1);
                     ItemMeta buyButtonMeta = buyButton.getItemMeta();
 
                     Kit nextKit;
 
-                    boolean hasKit = false;
-
+                    Kit level1Kit = kitGroup.getLevel1();
+                    Kit level2Kit = kitGroup.getLevel2();
+                    Kit level3Kit = kitGroup.getLevel3();
 
                     if (!kitSelector.hasKit(kit)) {
                         // He does not have the kit...
                         buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Purchase kit");
-                        nextKit = kitGroup.getLevel1();
+                        nextKit = level1Kit;
                     }
                     else if (level == 1 || level == 2) {
                         // He has the kit...
                         buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Upgrade kit");
-                        if (level == 1) nextKit = kitGroup.getLevel2();
-                        else nextKit = kitGroup.getLevel3();
+                        if (level == 1) nextKit = level2Kit;
+                        else nextKit = level3Kit;
                     }
                     else {
                         buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit is already max level");
@@ -254,17 +259,25 @@ public class KitSelector {
                     }
 
                     List<String> buyButtonLore = new ArrayList<>();
-                    buyButtonLore.add(ChatColor.GOLD + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
-                    buyButtonLore.add(ChatColor.RED + "Requirement:");
-                    buyButtonLore.add(ChatColor.DARK_RED + "You need to have " + nextKit.getRequirement().getDescription()
-                            + " to unlock this kit");
+
+                    buyButtonLore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + "Next upgrade:" + ChatColor.GOLD
+                            + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
+                    buyButtonLore.add(ChatColor.UNDERLINE + Strings.repeat(" ", 10));
+                    buyButtonLore.add(ChatColor.BLUE + "" + ChatColor.BOLD + "Level 1:");
+                    buyButtonLore.addAll(level1Kit.getLore());
+                    buyButtonLore.add(ChatColor.UNDERLINE + Strings.repeat(" ", 10));
+                    buyButtonLore.add(ChatColor.BLUE + "" + ChatColor.BOLD + "Level 2:");
+                    buyButtonLore.addAll(level2Kit.getLore());
+                    buyButtonLore.add(ChatColor.UNDERLINE + Strings.repeat(" ", 10));
+                    buyButtonLore.add(ChatColor.BLUE + "" + ChatColor.BOLD + "Level 3:");
+                    buyButtonLore.addAll(level3Kit.getLore());
 
                     buyButtonMeta.setLore(buyButtonLore);
                     buyButton.setItemMeta(buyButtonMeta);
 
                     ItemStack selectButton = new ItemStack(Material.BEDROCK, 1);
                     ItemMeta selectButtonMeta = selectButton.getItemMeta();
-                    selectButtonMeta.setDisplayName(selectButtonDisplaynamePrefix + ChatColor.RESET + kitDisplayName);
+                    selectButtonMeta.setDisplayName(selectButtonDisplaynamePrefix + ChatColor.RESET + buttonDisplayname);
                     selectButton.setItemMeta(selectButtonMeta);
 
                     buyOrSellMenu.setItem(2, buyButton);

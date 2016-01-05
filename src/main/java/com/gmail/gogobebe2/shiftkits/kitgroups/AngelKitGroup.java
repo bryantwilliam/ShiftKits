@@ -15,23 +15,25 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AngelKitGroup implements KitGroup {
     @Override
     public Kit getLevel1() {
-        return getLevel(1, 1, 10000);
+        return getLevel(1, 1, 10000, "Start with a wood pick, wood sword, and 1 heavenly beacon.");
     }
 
     @Override
     public Kit getLevel2() {
-        return getLevel(2, 2, 25000);
+        return getLevel(2, 2, 25000, "Start with a wood pick, wood sword, and 2 heavenly beacons.");
     }
 
     @Override
     public Kit getLevel3() {
-        return getLevel(3, 2, 60000);
+        return getLevel(3, 2, 60000, "Start with a wood pick, wood sword, 2 heavenly beacons and 3 medicinal flowers");
     }
 
     @Override
@@ -39,11 +41,29 @@ public class AngelKitGroup implements KitGroup {
         return "Angel";
     }
 
-    private Kit getLevel(int level, int beacons, int cost) {
+    @Override
+    public List<String> getLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
+        lore.add(ChatColor.GRAY + "Spawn with a heavenly beacon.");
+        lore.add(ChatColor.GRAY + "Place the beacon anywhere and stand nearby for Regen I!");
+        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more beacons and medicinal flowers!");
+        return lore;
+    }
+
+    private Kit getLevel(int level, int beacons, int cost, String description) {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(Material.WOOD_PICKAXE, 1));
         items.put(1, new ItemStack(Material.WOOD_SWORD, 1));
         items.put(2, new ItemStack(Material.BEACON, beacons));
+
+        List<String> lore = new ArrayList<>(2);
+        lore.add(ChatColor.GREEN + description);
+
+        Cost requirement = new Cost(cost);
+
+        lore.add(ChatColor.GREEN + "Purchase rank from buy.xpcraft.com then unlock with " + requirement.getDescription()
+                + "!");
 
         final String MEDICINAL_FLOWER_DISPLAYNAME = ChatColor.AQUA + "" + ChatColor.ITALIC + "Medicinal Flower";
 
@@ -57,7 +77,7 @@ public class AngelKitGroup implements KitGroup {
             items.put(3, azureBluet);
         }
 
-        return new MagicKit(getName(), (short) level, new Cost(cost), items, Material.BEACON, new Listener() {
+        return new MagicKit(getName(), (short) level, requirement, items, Material.BEACON, lore, "shiftkits." + getName().toLowerCase(), new Listener() {
             @EventHandler
             private void onBlockPlace(BlockPlaceEvent event) {
                 Block block = event.getBlockPlaced();

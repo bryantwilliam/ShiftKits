@@ -15,10 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class NightcrawlerKitGroup implements KitGroup {
     private final ItemStack GHAST_TEAR = initGhastTear();
@@ -32,7 +29,7 @@ public class NightcrawlerKitGroup implements KitGroup {
     public Kit getLevel1() {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(GHAST_TEAR.clone()));
-        return getLevel(1, items, 10000);
+        return getLevel(1, items, 10000, "2 ghast tears.");
     }
 
     @Override
@@ -41,7 +38,7 @@ public class NightcrawlerKitGroup implements KitGroup {
         ItemStack ghastTear = GHAST_TEAR.clone();
         ghastTear.setAmount(2);
         items.put(0, ghastTear);
-        return getLevel(2, items, 25000);
+        return getLevel(2, items, 25000, "3  ghast tears.");
     }
 
     @Override
@@ -51,7 +48,7 @@ public class NightcrawlerKitGroup implements KitGroup {
         ghastTear.setAmount(2);
         items.put(0, ghastTear);
         items.put(1, new ItemStack(Material.ENDER_PEARL, 2));
-        return getLevel(3, items, 60000);
+        return getLevel(3, items, 60000, "4 ghast tears, and 1 enderpearl.");
     }
 
     @Override
@@ -59,12 +56,27 @@ public class NightcrawlerKitGroup implements KitGroup {
         return "Nightcrawler";
     }
 
-    private MagicKit getLevel(int level, Map<Integer, ItemStack> items, int cost) {
+    @Override
+    public List<String> getLore() {
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Spawn with ghast tears.");
+        lore.add(ChatColor.GRAY + "Left click them to TP to where you last fell froM!");
+        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more ghast tears.");
+        return lore;
+    }
+
+    private MagicKit getLevel(int level, Map<Integer, ItemStack> items, int xpRequired, String description) {
         int maxSlot = Collections.max(items.keySet());
         items.put(maxSlot + 1, new ItemStack(Material.STONE_PICKAXE, 1));
         items.put(maxSlot + 2, new ItemStack(Material.WOOD_SWORD, 1));
 
-        return new MagicKit(getName(), (short) level, new Cost(cost), items, Material.EYE_OF_ENDER, new Listener() {
+        List<String> lore = new ArrayList<>();
+
+        Cost cost = new Cost(xpRequired);
+        lore.add("Start with a stone pick and " + description);
+        lore.add("Unlock with " + cost.getDescription());
+
+        return new MagicKit(getName(), (short) level, cost, items, Material.GHAST_TEAR, lore, new Listener() {
             private Map<UUID, Location> lastLandOn = new HashMap<>();
 
             @EventHandler

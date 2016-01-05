@@ -9,15 +9,15 @@ public final class KitGroupInstances {
     public static List<KitGroup> getInstances() {
         if (kitGroups == null) {
             kitGroups = new ArrayList<>();
-            kitGroups.add(new AngelKitGroup());
-            kitGroups.add(new ArcherKitGroup());
-            kitGroups.add(new BerserkerKitGroup());
-            kitGroups.add(new CapitalistKitGroup());
-            kitGroups.add(new DemomanKitGroup());
-            kitGroups.add(new MinerKitGroup());
-            kitGroups.add(new NightcrawlerKitGroup());
-            kitGroups.add(new RogueKitGroup());
             kitGroups.add(new SwordsmanKitGroup());
+            kitGroups.add(new ArcherKitGroup());
+            kitGroups.add(new MinerKitGroup());
+            kitGroups.add(new RogueKitGroup());
+            kitGroups.add(new NightcrawlerKitGroup());
+            kitGroups.add(new CapitalistKitGroup());
+            kitGroups.add(new AngelKitGroup());
+            kitGroups.add(new BerserkerKitGroup());
+            kitGroups.add(new DemomanKitGroup());
         }
         return kitGroups;
     }
