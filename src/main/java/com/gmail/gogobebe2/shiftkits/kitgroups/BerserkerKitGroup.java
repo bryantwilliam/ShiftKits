@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 public class BerserkerKitGroup implements KitGroup {
+    public static final short RED_DYE_METADATA = 1;
+
     @Override
     public Kit getLevel1() {
         return getLevel(2, 10, 15000, 1);
@@ -47,46 +49,51 @@ public class BerserkerKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
-        lore.add(ChatColor.GRAY + "Spawn with rose buds.");
+        lore.add(ChatColor.GRAY + "Spawn with rose reds.");
         lore.add(ChatColor.GRAY + "Left click them to activate bloodlust!");
-        lore.add(ChatColor.GRAY + "You'll gain Strength II at the cost of soe health.");
+        lore.add(ChatColor.GRAY + "You'll gain Strength II at the cost of some health.");
         lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more rose buds and more potent bloodlust!");
         return lore;
     }
 
-    private Kit getLevel(int roseBudAmount, final int strengthDuration, int xp, int level) {
+    private Kit getLevel(int roseRedAmount, final int strengthDuration, int xp, int level) {
         Map<Integer, ItemStack> items = new HashMap<>();
 
         items.put(0, new ItemStack(Material.STONE_PICKAXE, 1));
         items.put(1, new ItemStack(Material.WOOD_SWORD));
 
-        ItemStack roseBud = new ItemStack(Material.RED_ROSE, roseBudAmount);
-        ItemMeta meta = roseBud.getItemMeta();
+        ItemStack redDye = new ItemStack(Material.INK_SACK, roseRedAmount);
+        redDye.setDurability(RED_DYE_METADATA);
+        ItemMeta meta = redDye.getItemMeta();
         final String BLOODLUST_DISPLAYNAME = ChatColor.DARK_RED + "" + ChatColor.BOLD + "Activate Bloodlust";
         meta.setDisplayName(BLOODLUST_DISPLAYNAME);
         final List<String> itemLore = new ArrayList<>();
         itemLore.add(ChatColor.RED + "Right click deals 3 hearts damage to you;");
         itemLore.add(ChatColor.RED + "Gives strength II for " + strengthDuration + " seconds");
         meta.setLore(itemLore);
-        roseBud.setItemMeta(meta);
+        redDye.setItemMeta(meta);
 
-        items.put(2, roseBud);
+        items.put(2, redDye);
 
         Cost cost = new Cost(xp);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a wood pick, wood sword, and " + roseBudAmount + " rose buds.");
-        lore.add(ChatColor.GREEN + "Deals " + (level + 1) + " hearts for " + strengthDuration + " seconds of Strength II.");
-        lore.add(ChatColor.GREEN + "Purchase a rank from buy.xpcraft.com, then unlock with " + cost.getDescription() + "!");
+        lore.add(ChatColor.GREEN + "Start with a wood pick,");
+        lore.add("wood sword, and " + roseRedAmount + " rose reds.");
+        lore.add(ChatColor.GREEN + "Deals " + (level + 1) + " hearts for ");
+        lore.add(strengthDuration + " seconds of Strength II.");
+        lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
+        lore.add(ChatColor.GOLD + "Then unlock with " + cost.getDescription() + "!");
 
-        return new MagicKit(getName(), (short) level, cost, items, Material.RED_ROSE, lore, "shiftkits."
+        return new MagicKit(getName(), (short) level, cost, items, Material.INK_SACK, lore, "shiftkits."
                 + getName().toLowerCase(), new Listener() {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
                 ItemMeta meta = item.getItemMeta();
                 if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
-                        && item.getType() == Material.RED_ROSE
+                        && item.getType() == Material.INK_SACK
+                        && item.getDurability() == RED_DYE_METADATA
                         && meta.getDisplayName().equals(BLOODLUST_DISPLAYNAME)
                         && meta.getLore().equals(itemLore)) {
                     Player player = event.getPlayer();

@@ -90,7 +90,8 @@ public class DemomanKitGroup implements KitGroup {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GREEN + "Start with a wood pick " + (level == 3 ? "," : "and") + " " + fireworksAmount
                 + " fireworks" + (level == 3 ? ", and 2 MIRV" : "."));
-        lore.add(ChatColor.GREEN + "Purchase a rank from buy.xpcraft.com, then unlock with " + cost.getDescription() + "!");
+        lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
+        lore.add(ChatColor.GOLD + "Then unlock with " + cost.getDescription() + "!");
 
         return new MagicKit(getName(), level, cost, items, Material.FIREWORK, lore, "shiftkits."
                 + getName().toLowerCase(), new Listener() {

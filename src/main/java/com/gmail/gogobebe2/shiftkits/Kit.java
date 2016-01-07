@@ -38,7 +38,7 @@ public class Kit {
 
     public Kit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents,
                Material helmet, Material chestplate, Material leggings, Material boots, Material icon, List<String> lore, String permissionNode) {
-        this.id = level + "-" + name;
+        this.id = level + "-" + name.toLowerCase();
         this.level = level;
         this.requirement = requirement;
         this.contents = contents;

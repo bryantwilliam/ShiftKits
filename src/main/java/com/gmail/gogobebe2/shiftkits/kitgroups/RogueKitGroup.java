@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class RogueKitGroup implements KitGroup {
 
+    // http://minecraft-ids.grahamedgecombe.com/potion-calculator
+    public final static short TIER1_SPLASH_POISON_METADATA = 16388;
+    public final static short TIER2_SPLASH_POISON_METADATA = 16420;
+
     @Override
     public Kit getLevel1() {
         return getLevel(2, 1, 10000, 1);
@@ -49,9 +53,6 @@ public class RogueKitGroup implements KitGroup {
 
         ItemStack potion = new ItemStack(Material.POTION, poisonPotionAmount);
 
-        // http://minecraft-ids.grahamedgecombe.com/potion-calculator
-        final short TIER1_SPLASH_POISON_METADATA = 16388;
-        final short TIER2_SPLASH_POISON_METADATA = 16420;
         if (poisonPotionLevel == 1) potion.setDurability(TIER1_SPLASH_POISON_METADATA);
         else potion.setDurability(TIER2_SPLASH_POISON_METADATA);
 
@@ -63,6 +64,6 @@ public class RogueKitGroup implements KitGroup {
         lore.add(ChatColor.GREEN + "Start with a stone pick and " + poisonPotionLevel + " Splash 0:33 Poison potions.");
         lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription() + "!");
 
-        return new Kit(getName(), (short) level, cost, items, Material.POISONOUS_POTATO, lore);
+        return new Kit(getName(), (short) level, cost, items, Material.POTION, lore);
     }
 }

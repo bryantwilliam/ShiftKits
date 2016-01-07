@@ -22,6 +22,7 @@ public class NightcrawlerKitGroup implements KitGroup {
 
     private ItemStack initGhastTear() {
         ItemStack ghastTear = new ItemStack(Material.GHAST_TEAR, 1);
+        // might add lore/displayname later
         return ghastTear;
     }
 
@@ -38,7 +39,7 @@ public class NightcrawlerKitGroup implements KitGroup {
         ItemStack ghastTear = GHAST_TEAR.clone();
         ghastTear.setAmount(2);
         items.put(0, ghastTear);
-        return getLevel(2, items, 25000, "3  ghast tears.");
+        return getLevel(2, items, 25000, "3 ghast tears.");
     }
 
     @Override
@@ -73,8 +74,8 @@ public class NightcrawlerKitGroup implements KitGroup {
         List<String> lore = new ArrayList<>();
 
         Cost cost = new Cost(xpRequired);
-        lore.add("Start with a stone pick and " + description);
-        lore.add("Unlock with " + cost.getDescription());
+        lore.add(ChatColor.GREEN + "Start with a stone pick " + (level == 3 ? "," : "and") + " " + description);
+        lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription());
 
         return new MagicKit(getName(), (short) level, cost, items, Material.GHAST_TEAR, lore, new Listener() {
             private Map<UUID, Location> lastLandOn = new HashMap<>();
@@ -82,9 +83,10 @@ public class NightcrawlerKitGroup implements KitGroup {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
+                item.setAmount(1);
                 if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR
                         || event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
-                        && item.getType() == Material.GHAST_TEAR) {
+                        && item.equals(GHAST_TEAR)) {
                     Player player = event.getPlayer();
                     UUID uuid = player.getUniqueId();
                     if (lastLandOn.containsKey(uuid)) {
