@@ -57,15 +57,17 @@ public class KitSelector {
         assert swordsman != null;
 
         boolean hasKit = false;
-        String[] kitsColumn = new String[0];
+        String[] kitsColumn;
         try {
             kitsColumn = ShiftStats.getAPI().getKits(Bukkit.getPlayer(playerUUID).getUniqueId());
+            if (kitsColumn != null && kitsColumn.length != 0) {
+                for (String kitID : kitsColumn) if (swordsman.getLevel1().getId().equals(kitID)) hasKit = true;
+            }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        if (kitsColumn.length != 0) for (String kitID : kitsColumn) if (swordsman.getLevel1().getId().equals(kitID)) hasKit = true;
 
-        if (!hasKit) ShiftStats.getAPI().addKit(Bukkit.getPlayer(playerUUID).getUniqueId(), "1-swordsman");
+        if (!hasKit) ShiftStats.getAPI().addKit(Bukkit.getPlayer(playerUUID).getUniqueId(), swordsman.getLevel1().getId());
 
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(ShiftKits.instance, new Runnable() {
@@ -90,13 +92,11 @@ public class KitSelector {
     }
 
     private void updateKitListMenu() throws SQLException, ClassNotFoundException {
-        Player player = Bukkit.getPlayer(playerUUID);
-
         int index = 0;
 
         Map<String, KitGroup> kitGroups = new HashMap<>();
 
-        for (KitGroup kitGroup : KitGroupInstances.getInstances()) {
+        for (KitGroup kitGroup :  KitGroupInstances.getInstances()) {
             ItemStack button = new ItemStack(kitGroup.getLevel1().getIcon(), 1);
 
             if (kitGroup instanceof RogueKitGroup) button.setDurability(RogueKitGroup.TIER1_SPLASH_POISON_METADATA);
@@ -116,7 +116,6 @@ public class KitSelector {
             index++;
         }
 
-        player.updateInventory();
         this.kitGroupButtonDisplaynames = kitGroups;
     }
 
