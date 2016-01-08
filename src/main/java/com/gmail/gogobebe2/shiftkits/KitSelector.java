@@ -218,6 +218,13 @@ public class KitSelector {
                     Player player = event.getPlayer();
                     player.sendMessage(ChatColor.GREEN + "Opening kit selection menu...");
                     player.openInventory(kitSelectors.get(player.getUniqueId()).kitListMenu);
+
+                    try {
+                        kitSelectors.get(player.getUniqueId()).updateKitListMenu();
+                    } catch (SQLException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                        player.sendMessage(ChatColor.RED + "Error! Can't connect to sql database!");
+                    }
                 }
             }
         }
