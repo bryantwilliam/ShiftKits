@@ -47,14 +47,15 @@ public class SwordsmanKitGroup implements KitGroup {
 
         int swordSharpnessLevel = level - 1;
         ItemStack sword = new ItemStack(Material.STONE_SWORD, 1);
-        if (swordSharpnessLevel != 0) sword.addEnchantment(Enchantment.DAMAGE_ALL, 1);
+        if (swordSharpnessLevel != 0) sword.addEnchantment(Enchantment.DAMAGE_ALL, 2);
         items.put(0, sword);
 
         Cost cost = new Cost(XP_REQUIRED);
 
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GREEN + "Start with a stone pick and a " + description + " sword.");
-        lore.add(ChatColor.GREEN + "Upgrade with " + cost.getDescription() + "!");
+        if (level == 1) lore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Available by default!");
+        else lore.add(ChatColor.GREEN + "Upgrade with " + cost.getDescription() + "!");
 
         items.put(1, new ItemStack(Material.STONE_PICKAXE));
         return new Kit(getName(), (short) level, cost, items, Material.STONE_SWORD, lore);
