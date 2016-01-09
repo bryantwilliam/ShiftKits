@@ -108,15 +108,16 @@ public class AngelKitGroup implements KitGroup {
 
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
-                ItemStack item = event.getItem();
-                if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
-                        && item != null && item.getType() == Material.RED_ROSE && item.getDurability() == 3
-                        && item.getItemMeta().getDisplayName().equals(MEDICINAL_FLOWER_DISPLAYNAME)) {
-                    item.setAmount(item.getAmount() - 1);
-                    Player player = event.getPlayer();
-                    player.setHealth(20);
-                    player.sendMessage(ChatColor.AQUA + "You feel refreshed from the magic of the medicinal flower...");
-                    event.setCancelled(true);
+                if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+                    ItemStack item = event.getItem();
+                    if (item != null && item.getType() == Material.RED_ROSE && item.getDurability() == 3
+                            && item.getItemMeta().getDisplayName().equals(MEDICINAL_FLOWER_DISPLAYNAME)) {
+                        item.setAmount(item.getAmount() - 1);
+                        Player player = event.getPlayer();
+                        player.setHealth(20);
+                        player.sendMessage(ChatColor.AQUA + "You feel refreshed from the magic of the medicinal flower...");
+                        event.setCancelled(true);
+                    }
                 }
             }
         });
