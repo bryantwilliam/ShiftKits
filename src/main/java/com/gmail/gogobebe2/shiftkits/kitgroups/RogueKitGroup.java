@@ -24,7 +24,7 @@ public class RogueKitGroup implements KitGroup {
 
     @Override
     public Kit getLevel2() {
-        return getLevel(5, 1, 25000, 2);
+        return getLevel(4, 1, 25000, 2);
     }
 
     @Override
