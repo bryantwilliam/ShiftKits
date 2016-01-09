@@ -23,17 +23,17 @@ import java.util.Map;
 public class AngelKitGroup implements KitGroup {
     @Override
     public Kit getLevel1() {
-        return getLevel(1, 1, 10000, "Start with a wood pick, wood sword, and 1 heavenly beacon.");
+        return getLevel(1, 1, 10000);
     }
 
     @Override
     public Kit getLevel2() {
-        return getLevel(2, 2, 25000, "Start with a wood pick, wood sword, and 2 heavenly beacons.");
+        return getLevel(2, 2, 25000);
     }
 
     @Override
     public Kit getLevel3() {
-        return getLevel(3, 2, 60000, "Start with a wood pick, wood sword, 2 heavenly beacons and 3 medicinal flowers");
+        return getLevel(3, 2, 60000);
     }
 
     @Override
@@ -51,14 +51,13 @@ public class AngelKitGroup implements KitGroup {
         return lore;
     }
 
-    private Kit getLevel(int level, int beacons, int cost, String description) {
+    private Kit getLevel(int level, int beacons, int cost) {
         Map<Integer, ItemStack> items = new HashMap<>();
         items.put(0, new ItemStack(Material.WOOD_PICKAXE, 1));
         items.put(1, new ItemStack(Material.WOOD_SWORD, 1));
         items.put(2, new ItemStack(Material.BEACON, beacons));
 
         List<String> lore = new ArrayList<>(2);
-        lore.add(ChatColor.GREEN + description);
 
         Cost requirement = new Cost(cost);
 

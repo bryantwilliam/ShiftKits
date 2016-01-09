@@ -307,7 +307,7 @@ public class KitSelector {
                     String line = ChatColor.UNDERLINE + Strings.repeat(" ", longest);
                     buyButtonLore.set(1, line);
                     buyButtonLore.set(4 + level1KitLore.size(), line);
-                    buyButtonLore.set(6 + level1KitLore.size() + level2KitLore.size(), line);
+                    buyButtonLore.set(7 + level1KitLore.size() + level2KitLore.size(), line);
 
                     buyButtonMeta.setLore(buyButtonLore);
                     buyButton.setItemMeta(buyButtonMeta);
