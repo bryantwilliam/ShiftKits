@@ -16,17 +16,17 @@ public class SwordsmanKitGroup implements KitGroup {
 
     @Override
     public Kit getLevel1() {
-        return getLevel(7500, 1, "wood");
+        return getLevel(0, 1, "wood");
     }
 
     @Override
     public Kit getLevel2() {
-        return getLevel(20000, 2, "stone");
+        return getLevel(7500, 2, "stone");
     }
 
     @Override
     public Kit getLevel3() {
-        return getLevel(50000, 3, "Sharp II stone");
+        return getLevel(20000, 3, "Sharp II stone");
     }
 
     @Override

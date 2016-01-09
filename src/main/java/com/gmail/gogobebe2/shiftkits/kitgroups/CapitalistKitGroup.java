@@ -50,7 +50,7 @@ public class CapitalistKitGroup implements KitGroup {
         Cost cost = new Cost(xp);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a stone pick, wood sword, " + (level == 3 ? "" : "and") + " " + gold
+        lore.add(ChatColor.GREEN + "Start with a stone pick, wood sword," + (level == 3 ? "" : " and") + " " + gold
                 + " gold ingots" + (level == 3 ? ", and 2 iron ingots." : "."));
         lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription() + "!");
 

@@ -88,7 +88,7 @@ public class DemomanKitGroup implements KitGroup {
         Cost cost = new Cost(xp);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a wood pick " + (level == 3 ? "," : "and") + " " + fireworksAmount
+        lore.add(ChatColor.GREEN + "Start with a wood pick" + (level == 3 ? "," : " and") + " " + fireworksAmount
                 + " fireworks" + (level == 3 ? ", and 2 MIRV" : "."));
         lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
         lore.add(ChatColor.GOLD + "Then unlock with " + cost.getDescription() + "!");
