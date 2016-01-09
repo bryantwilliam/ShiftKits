@@ -90,20 +90,22 @@ public class BerserkerKitGroup implements KitGroup {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
-                ItemMeta meta = item.getItemMeta();
-                if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
-                        && item.getType() == Material.INK_SACK
-                        && item.getDurability() == RED_DYE_METADATA
-                        && meta.getDisplayName().equals(BLOODLUST_DISPLAYNAME)
-                        && meta.getLore().equals(itemLore)) {
-                    Player player = event.getPlayer();
-                    player.setHealth(player.getHealth() - 6);
-                    player.playEffect(EntityEffect.HURT);
-                    player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
-                    player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
-                    item.setAmount(item.getAmount() - 1);
-                    event.setCancelled(true);
+                if (item != null) {
+                    ItemMeta meta = item.getItemMeta();
+                    if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
+                            && item.getType() == Material.INK_SACK
+                            && item.getDurability() == RED_DYE_METADATA
+                            && meta.getDisplayName().equals(BLOODLUST_DISPLAYNAME)
+                            && meta.getLore().equals(itemLore)) {
+                        Player player = event.getPlayer();
+                        player.setHealth(player.getHealth() - 6);
+                        player.playEffect(EntityEffect.HURT);
+                        player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
+                        player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
+                        item.setAmount(item.getAmount() - 1);
+                        event.setCancelled(true);
+                    }
                 }
             }
         });

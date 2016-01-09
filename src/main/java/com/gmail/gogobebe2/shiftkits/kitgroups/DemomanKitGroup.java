@@ -108,7 +108,7 @@ public class DemomanKitGroup implements KitGroup {
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
                 if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
-                        && item.getType() == Material.FIREWORK) {
+                        && item != null && item.getType() == Material.FIREWORK) {
 
                     String itemDisplayName = item.getItemMeta().getDisplayName();
 

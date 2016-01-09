@@ -110,7 +110,7 @@ public class AngelKitGroup implements KitGroup {
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
                 if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR)
-                        && item.getType() == Material.RED_ROSE && item.getDurability() == 3
+                        && item != null && item.getType() == Material.RED_ROSE && item.getDurability() == 3
                         && item.getItemMeta().getDisplayName().equals(MEDICINAL_FLOWER_DISPLAYNAME)) {
                     item.setAmount(item.getAmount() - 1);
                     Player player = event.getPlayer();
