@@ -277,24 +277,27 @@ public class KitSelector {
                         return;
                     }
 
-                    List<String> buyButtonLore = new ArrayList<>();
+                    List<String> buyButtonLore = new ArrayList<>(6);
 
                     List<String> level1KitLore = level1Kit.getLore();
                     List<String> level2KitLore = level2Kit.getLore();
 
-                    buyButtonLore.set(0, ChatColor.YELLOW + "" + ChatColor.BOLD + "Next upgrade: " + ChatColor.GOLD
+                    buyButtonLore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + "Next upgrade: " + ChatColor.GOLD
                             + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
+                    buyButtonLore.add("purple line placeholder");
                     buyButtonLore.add("");
 
-                    buyButtonLore.set(3, ChatColor.BLUE + "" + ChatColor.BOLD + "Level 1:");
+                    buyButtonLore.add(ChatColor.BLUE + "" + ChatColor.BOLD + "Level 1:");
                     buyButtonLore.addAll(level1KitLore);
+                    buyButtonLore.add("purple line placeholder");
                     buyButtonLore.add("");
 
-                    buyButtonLore.add(5 + level1KitLore.size(), ChatColor.BLUE + "" + ChatColor.BOLD + "Level 2:");
+                    buyButtonLore.add(ChatColor.BLUE + "" + ChatColor.BOLD + "Level 2:");
                     buyButtonLore.addAll(level2KitLore);
+                    buyButtonLore.add("purple line placeholder");
                     buyButtonLore.add("");
 
-                    buyButtonLore.set(7 + level1KitLore.size() + level2KitLore.size(), ChatColor.BLUE + "" + ChatColor.BOLD + "Level 3:");
+                    buyButtonLore.add(ChatColor.BLUE + "" + ChatColor.BOLD + "Level 3:");
                     buyButtonLore.addAll(level3Kit.getLore());
 
                     int longest = buyButtonLore.get(0).length();
