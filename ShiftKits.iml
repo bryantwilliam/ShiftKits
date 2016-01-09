@@ -25,7 +25,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.gmail.gogobebe2:ShiftSpawn:LATEST">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../ShiftSpawn/target/ShiftSpawn-1.4.12-BETA-SNAPSHOT.jar!/" />
+          <root url="jar://$MODULE_DIR$/../ShiftSpawn/target/ShiftSpawn-1.4.13-BETA-SNAPSHOT.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
