@@ -104,6 +104,7 @@ public class KitSelector {
 
             ItemMeta meta = button.getItemMeta();
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
             String displayName = ChatColor.AQUA + kitGroup.getName();
             meta.setDisplayName(displayName);
 
@@ -214,7 +215,7 @@ public class KitSelector {
             if (action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR
                     || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
                 ItemStack item = event.getItem();
-                if (item.getType() == selector.getType() && item.getItemMeta().equals(selector.getItemMeta())) {
+                if (item != null && item.getType() == selector.getType() && item.getItemMeta().equals(selector.getItemMeta())) {
                     Player player = event.getPlayer();
                     player.sendMessage(ChatColor.GREEN + "Opening kit selection menu...");
                     try {
