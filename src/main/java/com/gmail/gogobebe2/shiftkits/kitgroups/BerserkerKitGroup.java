@@ -79,9 +79,9 @@ public class BerserkerKitGroup implements KitGroup {
 
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GREEN + "Start with a wood pick,");
-        lore.add("wood sword, and " + roseRedAmount + " rose reds.");
+        lore.add(ChatColor.GREEN + "wood sword, and " + roseRedAmount + " rose reds.");
         lore.add(ChatColor.GREEN + "Deals " + (level + 1) + " hearts for ");
-        lore.add(strengthDuration + " seconds of Strength II.");
+        lore.add(ChatColor.GREEN + "" + strengthDuration + " seconds of Strength II.");
         lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
         lore.add(ChatColor.GOLD + "Then unlock with " + cost.getDescription() + "!");
 

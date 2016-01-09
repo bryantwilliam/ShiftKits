@@ -273,8 +273,7 @@ public class KitSelector {
                     } else {
                         buyButtonMeta.setDisplayName(ChatColor.GOLD + "" + ChatColor.BOLD + "Kit is already max level");
                         buyButton.setType(Material.BARRIER);
-                        player.sendMessage(ChatColor.RED + "Error! This kit is already it's max level.");
-                        return;
+                        nextKit = null;
                     }
 
                     List<String> buyButtonLore = new ArrayList<>(6);
@@ -282,8 +281,10 @@ public class KitSelector {
                     List<String> level1KitLore = level1Kit.getLore();
                     List<String> level2KitLore = level2Kit.getLore();
 
-                    buyButtonLore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + "Next upgrade: " + ChatColor.GOLD
-                            + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
+                    if (nextKit == null) buyButtonLore.add(ChatColor.RED + "MAXED OUT");
+                    else buyButtonLore.add(ChatColor.YELLOW + "" + ChatColor.BOLD + "Next upgrade: " + ChatColor.GOLD
+                                + "Level " + nextKit.getLevel() + " " + kitGroup.getName());
+
                     buyButtonLore.add("purple line placeholder");
                     buyButtonLore.add("");
 
@@ -305,8 +306,8 @@ public class KitSelector {
 
                     String line = ChatColor.UNDERLINE + Strings.repeat(" ", longest);
                     buyButtonLore.set(1, line);
-                    buyButtonLore.set(3 + level1KitLore.size(), line);
-                    buyButtonLore.set(5 + level1KitLore.size() + level2KitLore.size(), line);
+                    buyButtonLore.set(4 + level1KitLore.size(), line);
+                    buyButtonLore.set(6 + level1KitLore.size() + level2KitLore.size(), line);
 
                     buyButtonMeta.setLore(buyButtonLore);
                     buyButton.setItemMeta(buyButtonMeta);
