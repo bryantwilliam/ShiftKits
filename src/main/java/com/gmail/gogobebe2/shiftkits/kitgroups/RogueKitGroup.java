@@ -61,7 +61,7 @@ public class RogueKitGroup implements KitGroup {
         Cost cost = new Cost(XP_REQUIRED);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a stone pick and " + poisonPotionLevel + " Splash 0:33 Poison potions.");
+        lore.add(ChatColor.GREEN + "Start with a stone pick and " + poisonPotionAmount + " Splash 0:33 Poison potions.");
         lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription() + "!");
 
         return new Kit(getName(), (short) level, cost, items, Material.POTION, lore);

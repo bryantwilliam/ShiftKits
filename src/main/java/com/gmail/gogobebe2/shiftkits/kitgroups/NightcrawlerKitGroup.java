@@ -37,19 +37,19 @@ public class NightcrawlerKitGroup implements KitGroup {
     public Kit getLevel2() {
         Map<Integer, ItemStack> items = new HashMap<>();
         ItemStack ghastTear = GHAST_TEAR.clone();
-        ghastTear.setAmount(2);
+        ghastTear.setAmount(4);
         items.put(0, ghastTear);
-        return getLevel(2, items, 25000, "3 ghast tears.");
+        return getLevel(2, items, 25000, "4 ghast tears.");
     }
 
     @Override
     public Kit getLevel3() {
         Map<Integer, ItemStack> items = new HashMap<>();
         ItemStack ghastTear = GHAST_TEAR.clone();
-        ghastTear.setAmount(2);
+        ghastTear.setAmount(6);
         items.put(0, ghastTear);
-        items.put(1, new ItemStack(Material.ENDER_PEARL, 2));
-        return getLevel(3, items, 60000, "4 ghast tears, and 1 enderpearl.");
+        items.put(1, new ItemStack(Material.ENDER_PEARL, 1));
+        return getLevel(3, items, 60000, "6 ghast tears, and 1 enderpearl.");
     }
 
     @Override
@@ -61,7 +61,7 @@ public class NightcrawlerKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with ghast tears.");
-        lore.add(ChatColor.GRAY + "Left click them to TP to where you last fell froM!");
+        lore.add(ChatColor.GRAY + "Left click them to TP to where you last fell from!");
         lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more ghast tears.");
         return lore;
     }

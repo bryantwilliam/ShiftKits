@@ -64,7 +64,7 @@ public class AngelKitGroup implements KitGroup {
         lore.add(ChatColor.GREEN + "Start with a wood pick, ");
         lore.add(ChatColor.GREEN + "wood sword" + (level == 3 ? " and" : ","));
         lore.add(ChatColor.GREEN + "" + beacons + " heavenly beacons" + (level == 3 ? "," : "."));
-        lore.add(ChatColor.GREEN + "and 3 medicinal flowers.");
+        if (level == 3) lore.add(ChatColor.GREEN + "and 3 medicinal flowers.");
         lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
         lore.add(ChatColor.GOLD + "Then unlock with " + requirement.getDescription() + "!");
 
