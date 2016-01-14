@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftKits</artifactId>
-    <version>1.0.3-PREALPHA-SNAPSHOT</version>
+    <version>1.0.4-PREALPHA-SNAPSHOTT</version>
 
     <build>
         <pluginManagement>
@@ -27,6 +27,10 @@
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>elmakers-repo</id>
+            <url>http://maven.elmakers.com/repository/ </url>
         </repository>
     </repositories>
 
@@ -56,6 +60,12 @@
             <version>LATEST</version>
             <scope>system</scope>
             <systemPath>/home/william/IdeaProjects/ShiftKits/src/libs/xcore-1.0-jar-with-dependencies.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>de.slikey</groupId>
+            <artifactId>EffectLib</artifactId>
+            <version>3.8</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

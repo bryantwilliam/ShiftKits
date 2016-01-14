@@ -2,8 +2,16 @@ package com.gmail.gogobebe2.shiftkits.kitgroups;
 
 import com.gmail.gogobebe2.shiftkits.Kit;
 import com.gmail.gogobebe2.shiftkits.MagicKit;
+import com.gmail.gogobebe2.shiftkits.ShiftKits;
 import com.gmail.gogobebe2.shiftkits.requirements.Cost;
+import de.slikey.effectlib.EffectLib;
+import de.slikey.effectlib.EffectManager;
+import de.slikey.effectlib.effect.ShieldEffect;
+import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ParticleEffect;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -12,13 +20,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AngelKitGroup implements KitGroup {
     @Override
@@ -80,12 +89,23 @@ public class AngelKitGroup implements KitGroup {
         }
 
         return new MagicKit(getName(), (short) level, requirement, items, Material.BEACON, lore, "shiftkits." + getName().toLowerCase(), new Listener() {
+            private Map<DynamicLocation, Integer> shieldEffects = new HashMap<>();
+
+            private EffectManager effectManager = new EffectManager(ShiftKits.instance);
+
+            public EffectLib getEffectLib() {
+                Plugin effectLib = Bukkit.getPluginManager().getPlugin("EffectLib");
+                if (effectLib == null || !(effectLib instanceof EffectLib)) {
+                    return null;
+                }
+                return (EffectLib) effectLib;
+            }
+
             @EventHandler
             private void onBlockPlace(BlockPlaceEvent event) {
                 Block block = event.getBlockPlaced();
                 if (block.getType() == Material.BEACON) {
-
-                    final int BEACON_Y = 5;
+/*                    final int BEACON_Y = 5;
                     block.getWorld().getBlockAt(block.getX(), BEACON_Y, block.getZ()).setType(Material.BEACON);
 
                     for (int x = block.getX() - 1; x < block.getX() + 1; x++) {
@@ -97,11 +117,49 @@ public class AngelKitGroup implements KitGroup {
                     for (int y = block.getY(); y > BEACON_Y; y--) {
                         Block b = block.getWorld().getBlockAt(block.getX(), y, block.getZ());
                         if (b.getType() != Material.AIR) b.setType(Material.STAINED_GLASS);
-                    }
+                    }*/
+
+                    ShieldEffect shieldEffect = new ShieldEffect(effectManager);
+                    shieldEffect.visibleRange = 200;
+                    shieldEffect.updateLocations = false;
+                    shieldEffect.updateDirections = false;
+                    shieldEffect.particle = ParticleEffect.CRIT_MAGIC;
+
+                    DynamicLocation location = new DynamicLocation(block.getLocation());
+                    shieldEffect.setDynamicOrigin(location);
+                    shieldEffect.period = Integer.MAX_VALUE;
+
+                    shieldEffects.put(location, shieldEffect.radius);
+
+                    shieldEffect.start();
+
                     ItemStack item = event.getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     event.getPlayer().sendMessage(ChatColor.GOLD + "You call upon the heavens to heal you...");
                     event.setCancelled(true);
+                }
+            }
+
+            @EventHandler
+            private void onPlayerMove(PlayerMoveEvent event) {
+                for (DynamicLocation dynamicLocation : shieldEffects.keySet()) {
+                    Player player = event.getPlayer();
+                    Location location = dynamicLocation.getLocation();
+                    int radius = shieldEffects.get(dynamicLocation);
+
+                    Collection<PotionEffect> activePotionEffects = player.getActivePotionEffects();
+                    final int AMPLIFIER = 1;
+
+                    if (event.getTo().distance(location) <= radius) {
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, AMPLIFIER));
+                    }
+                    else if (event.getFrom().distance(location) <= radius) {
+                        for (PotionEffect potionEffect : activePotionEffects) {
+                            if (potionEffect.getType() == PotionEffectType.REGENERATION && potionEffect.getAmplifier() == AMPLIFIER) {
+                                player.removePotionEffect(PotionEffectType.REGENERATION);
+                            }
+                        }
+                    }
                 }
             }
 
