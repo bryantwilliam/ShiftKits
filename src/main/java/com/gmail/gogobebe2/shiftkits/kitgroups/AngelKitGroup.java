@@ -136,6 +136,7 @@ public class AngelKitGroup implements KitGroup {
                     ItemStack item = event.getItemInHand();
                     item.setAmount(item.getAmount() - 1);
                     event.getPlayer().sendMessage(ChatColor.GOLD + "You call upon the heavens to heal you...");
+
                     event.setCancelled(true);
                 }
             }
@@ -151,14 +152,7 @@ public class AngelKitGroup implements KitGroup {
                     final int AMPLIFIER = 1;
 
                     if (event.getTo().distance(location) <= radius) {
-                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, AMPLIFIER));
-                    }
-                    else if (event.getFrom().distance(location) <= radius) {
-                        for (PotionEffect potionEffect : activePotionEffects) {
-                            if (potionEffect.getType() == PotionEffectType.REGENERATION && potionEffect.getAmplifier() == AMPLIFIER) {
-                                player.removePotionEffect(PotionEffectType.REGENERATION);
-                            }
-                        }
+                        player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 10 * 20 /*ticks*/, AMPLIFIER));
                     }
                 }
             }
