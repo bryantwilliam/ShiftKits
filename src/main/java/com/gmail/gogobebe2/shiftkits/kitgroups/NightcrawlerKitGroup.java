@@ -83,25 +83,22 @@ public class NightcrawlerKitGroup implements KitGroup {
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
                 ItemStack item = event.getItem();
-                if (item.equals(GHAST_TEAR)) {
-                	
-                	item.setAmount(1);
-                	if ((event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR
-                			|| event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-                		Player player = event.getPlayer();
-                		UUID uuid = player.getUniqueId();
-                		if (lastLandOn.containsKey(uuid)) {
-                			player.setGameMode(GameMode.CREATIVE);
-                			player.teleport(lastLandOn.get(uuid));
-                			player.setGameMode(GameMode.SURVIVAL);
-                			item.setAmount(item.getAmount() - 1);
-                			player.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "You manage to get back on land...");
-                		}
-                		else {
-                			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have never been on land before.");
-                		}
-                		event.setCancelled(true);
-                	}
+                ItemStack compareItem = item.clone().setAmount(1);
+            	if (compareItem.equals(GHAST_TEAR) && (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR
+            			|| event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)) {
+            		Player player = event.getPlayer();
+            		UUID uuid = player.getUniqueId();
+            		if (lastLandOn.containsKey(uuid)) {
+            			player.setGameMode(GameMode.CREATIVE);
+            			player.teleport(lastLandOn.get(uuid));
+            			player.setGameMode(GameMode.SURVIVAL);
+            			item.setAmount(item.getAmount() - 1);
+            			player.sendMessage(ChatColor.BLUE + "" + ChatColor.BOLD + "You manage to get back on land...");
+            		}
+            		else {
+            			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have never been on land before.");
+            		}
+            		event.setCancelled(true);
                 }
             }
 
