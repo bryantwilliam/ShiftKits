@@ -13,8 +13,7 @@ public class Cost extends Requirement {
 
     @Override
     public boolean satisfies(Player player) {
-        if (PlayerInfo.getPlayerInfo(player).getXP() >= price) return true;
-        return false;
+        return PlayerInfo.getPlayerInfo(player).getXP() >= price;
     }
 
     public void takeXP(Player player) {
