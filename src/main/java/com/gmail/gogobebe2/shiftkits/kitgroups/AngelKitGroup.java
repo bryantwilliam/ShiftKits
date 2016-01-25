@@ -105,19 +105,6 @@ public class AngelKitGroup implements KitGroup {
             private void onBlockPlace(BlockPlaceEvent event) {
                 Block block = event.getBlockPlaced();
                 if (block.getType() == Material.BEACON) {
-/*                    final int BEACON_Y = 5;
-                    block.getWorld().getBlockAt(block.getX(), BEACON_Y, block.getZ()).setType(Material.BEACON);
-
-                    for (int x = block.getX() - 1; x < block.getX() + 1; x++) {
-                        for (int z = block.getZ() - 1; z < block.getZ() + 1; z++) {
-                            block.getWorld().getBlockAt(x, BEACON_Y - 1, z).setType(Material.EMERALD_BLOCK);
-                        }
-                    }
-
-                    for (int y = block.getY(); y > BEACON_Y; y--) {
-                        Block b = block.getWorld().getBlockAt(block.getX(), y, block.getZ());
-                        if (b.getType() != Material.AIR) b.setType(Material.STAINED_GLASS);
-                    }*/
 
                     ShieldEffect shieldEffect = new ShieldEffect(effectManager);
                     shieldEffect.visibleRange = 200;
