@@ -41,7 +41,7 @@ public class RogueKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with splash poison potions!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more, stronger potions.");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more, stronger potions.");
         return lore;
     }
 

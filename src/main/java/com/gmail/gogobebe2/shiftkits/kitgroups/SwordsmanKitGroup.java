@@ -38,7 +38,7 @@ public class SwordsmanKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Default kit. Slice enemies with your trusty sword!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for better swords.");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give better swords.");
         return lore;
     }
 

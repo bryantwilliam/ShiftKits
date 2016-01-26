@@ -55,7 +55,7 @@ public class ArcherKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with a bow and arrows to hit enemies from afar!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more arrows and better bows.");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more arrows and better bows.");
         return lore;
     }
 

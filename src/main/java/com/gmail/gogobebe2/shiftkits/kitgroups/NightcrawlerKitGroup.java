@@ -62,7 +62,7 @@ public class NightcrawlerKitGroup implements KitGroup {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with ghast tears.");
         lore.add(ChatColor.GRAY + "Left click them to TP to where you last fell from!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more ghast tears.");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more ghast tears.");
         return lore;
     }
 

@@ -52,7 +52,7 @@ public class DemomanKitGroup implements KitGroup {
         lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
         lore.add(ChatColor.GRAY + "Spawn with fireworks.");
         lore.add(ChatColor.GRAY + "Left click them to fire rockets! Pa-sheeewwww!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more fireworks and MIRVs (a multi-rocket)!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more fireworks and MIRVs (a multi-rocket)!");
         return lore;
     }
 

@@ -36,7 +36,7 @@ public class CapitalistKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with gold ingots already in your inventory!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more gold...and some iron!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more gold...and some iron!");
         return lore;
     }
 

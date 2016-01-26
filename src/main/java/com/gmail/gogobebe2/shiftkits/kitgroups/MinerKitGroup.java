@@ -44,7 +44,7 @@ public class MinerKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with a better pick for faster mining!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for better picks.");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give better picks.");
         return lore;
     }
 

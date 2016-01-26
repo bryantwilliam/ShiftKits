@@ -56,7 +56,7 @@ public class AngelKitGroup implements KitGroup {
         lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
         lore.add(ChatColor.GRAY + "Spawn with a heavenly beacon.");
         lore.add(ChatColor.GRAY + "Place the beacon anywhere and stand nearby for Regen I!");
-        lore.add(ChatColor.GRAY + "Upgrade to level 2 and 3 for more beacons and medicinal flowers!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more beacons and medicinal flowers!");
         return lore;
     }
 
