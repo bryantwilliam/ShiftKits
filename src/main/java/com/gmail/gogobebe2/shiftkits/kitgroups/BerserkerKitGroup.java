@@ -52,7 +52,8 @@ public class BerserkerKitGroup implements KitGroup {
         lore.add(ChatColor.GRAY + "Spawn with rose reds.");
         lore.add(ChatColor.GRAY + "Left click them to activate bloodlust!");
         lore.add(ChatColor.GRAY + "You'll gain Strength II at the cost of some health.");
-        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more rose reds and more potent bloodlust!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more rose reds");
+        lore.add(ChatColor.GRAY + "and more potent bloodlust!");
         return lore;
     }
 
