@@ -36,7 +36,7 @@ public class CapitalistKitGroup implements KitGroup {
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Spawn with gold ingots already in your inventory!");
-        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more gold...and some iron!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more gold...& some iron!");
         return lore;
     }
 
@@ -50,8 +50,8 @@ public class CapitalistKitGroup implements KitGroup {
         Cost cost = new Cost(xp);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a stone pick, wood sword," + (level == 3 ? "" : " and") + " " + gold
-                + " gold ingots" + (level == 3 ? ", and 2 iron ingots." : "."));
+        lore.add(ChatColor.GREEN + "Start with a stone pick, wood sword,");
+        lore.add(ChatColor.GREEN + (level == 3 ? "" : " &") + " " + gold + " gold ingots" + (level == 3 ? ", & 2 iron ingots." : "."));
         lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription() + "!");
 
         return new Kit(getName(), (short) level, cost, items, Material.GOLD_INGOT, lore);

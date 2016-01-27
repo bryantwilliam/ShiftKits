@@ -52,7 +52,7 @@ public class BerserkerKitGroup implements KitGroup {
         lore.add(ChatColor.GRAY + "Left click them to activate bloodlust!");
         lore.add(ChatColor.GRAY + "You'll gain Strength II at the cost of some health.");
         lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more rose reds");
-        lore.add(ChatColor.GRAY + "and more potent bloodlust!");
+        lore.add(ChatColor.GRAY + "& more potent bloodlust!");
         return lore;
     }
 
@@ -79,7 +79,7 @@ public class BerserkerKitGroup implements KitGroup {
 
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GREEN + "Start with a wood pick,");
-        lore.add(ChatColor.GREEN + "wood sword, and " + roseRedAmount + " rose reds.");
+        lore.add(ChatColor.GREEN + "wood sword, & " + roseRedAmount + " rose reds.");
         lore.add(ChatColor.GREEN + "Deals " + (level + 1) + " hearts for ");
         lore.add(ChatColor.GREEN + "" + strengthDuration + " seconds of Strength II.");
         lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");

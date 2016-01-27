@@ -61,7 +61,7 @@ public class MinerKitGroup implements KitGroup {
         };
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with an " + description + " pick and a wood sword.");
+        lore.add(ChatColor.GREEN + "Start with an " + description + " pick & a wood sword.");
         lore.add(ChatColor.GREEN + "Unlock through mining " + ORES_MINED + " ores.");
 
         return new Kit(getName(), (short) level, requirement, items, Material.STONE_PICKAXE, lore);

@@ -52,7 +52,7 @@ public class DemomanKitGroup implements KitGroup {
         lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
         lore.add(ChatColor.GRAY + "Spawn with fireworks.");
         lore.add(ChatColor.GRAY + "Left click them to fire rockets! Pa-sheeewwww!");
-        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more fireworks and MIRVs (a multi-rocket)!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more fireworks & MIRVs (a multi-rocket)!");
         return lore;
     }
 
@@ -88,8 +88,8 @@ public class DemomanKitGroup implements KitGroup {
         Cost cost = new Cost(xp);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a wood pick" + (level == 3 ? "," : " and") + " " + fireworksAmount
-                + " fireworks" + (level == 3 ? ", and 2 MIRV" : "."));
+        lore.add(ChatColor.GREEN + "Start with a wood pick" + (level == 3 ? "," : " &") + " " + fireworksAmount
+                + " fireworks" + (level == 3 ? ", & 2 MIRV" : "."));
         lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
         lore.add(ChatColor.GOLD + "Then unlock with " + cost.getDescription() + "!");
 

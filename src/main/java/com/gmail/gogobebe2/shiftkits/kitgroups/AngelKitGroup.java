@@ -55,8 +55,8 @@ public class AngelKitGroup implements KitGroup {
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.RED + "" + ChatColor.BOLD + "PREMIUM ONLY!");
         lore.add(ChatColor.GRAY + "Spawn with a heavenly beacon.");
-        lore.add(ChatColor.GRAY + "Place the beacon anywhere and stand nearby for Regen I!");
-        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more beacons and medicinal flowers!");
+        lore.add(ChatColor.GRAY + "Place the beacon anywhere & stand nearby for Regen I!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more beacons & medicinal flowers!");
         return lore;
     }
 
@@ -71,8 +71,8 @@ public class AngelKitGroup implements KitGroup {
         Cost requirement = new Cost(cost);
 
         lore.add(ChatColor.GREEN + "Start with a wood pick, wood sword,");
-        lore.add(ChatColor.GREEN + (level == 3 ? " and" : ",") + " " + beacons + " heavenly beacons"
-                + (level == 3 ? ", and 3 medicinal flowers" : "") + ".");
+        lore.add(ChatColor.GREEN + (level == 3 ? " &" : ",") + " " + beacons + " heavenly beacons"
+                + (level == 3 ? ", & 3 medicinal flowers" : "") + ".");
         lore.add(ChatColor.GOLD + "Purchase rank from buy.xpcraft.com");
         lore.add(ChatColor.GOLD + "Then unlock with " + requirement.getDescription() + "!");
 

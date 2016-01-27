@@ -74,7 +74,7 @@ public class NightcrawlerKitGroup implements KitGroup {
         List<String> lore = new ArrayList<>();
 
         Cost cost = new Cost(xpRequired);
-        lore.add(ChatColor.GREEN + "Start with a stone pick" + (level == 3 ? "," : " and") + " " + description);
+        lore.add(ChatColor.GREEN + "Start with a stone pick" + (level == 3 ? "," : " &") + " " + description);
         lore.add(ChatColor.GREEN + "Unlock with " + cost.getDescription());
 
         return new MagicKit(getName(), (short) level, cost, items, Material.GHAST_TEAR, lore, new Listener() {

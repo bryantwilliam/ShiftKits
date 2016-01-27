@@ -23,7 +23,7 @@ public class ArcherKitGroup implements KitGroup {
         items.put(0, new ItemStack(Material.BOW, 1));
         items.put(1, new ItemStack(Material.STONE_PICKAXE, 1));
         items.put(2, new ItemStack(Material.ARROW, 8));
-        return getLevel(items, 50, 1, "bow and 8 arrows");
+        return getLevel(items, 50, 1, "bow & 8 arrows");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ArcherKitGroup implements KitGroup {
         items.put(0, new ItemStack(Material.BOW, 1));
         items.put(1, new ItemStack(Material.STONE_PICKAXE, 1));
         items.put(2, new ItemStack(Material.ARROW, 16));
-        return getLevel(items, 200, 2, "bow and 16 arrows");
+        return getLevel(items, 200, 2, "bow & 16 arrows");
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ArcherKitGroup implements KitGroup {
         items.put(0, bow);
         items.put(1, new ItemStack(Material.STONE_PICKAXE, 1));
         items.put(2, new ItemStack(Material.ARROW, 24));
-        return getLevel(items, 1000, 3, "Power I bow and 24 arrows");
+        return getLevel(items, 1000, 3, "Power I bow & 24 arrows");
     }
 
     @Override
@@ -54,8 +54,8 @@ public class ArcherKitGroup implements KitGroup {
     @Override
     public List<String> getLore() {
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GRAY + "Spawn with a bow and arrows to hit enemies from afar!");
-        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more arrows and better bows.");
+        lore.add(ChatColor.GRAY + "Spawn with a bow & arrows to hit enemies from afar!");
+        lore.add(ChatColor.GRAY + "Level 2 & 3 upgrades give more arrows & better bows.");
         return lore;
     }
 

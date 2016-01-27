@@ -53,7 +53,7 @@ public class SwordsmanKitGroup implements KitGroup {
         Cost cost = new Cost(XP_REQUIRED);
 
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GREEN + "Start with a stone pick and a " + description + " sword.");
+        lore.add(ChatColor.GREEN + "Start with a stone pick & " + description + " sword.");
         if (level == 1) lore.add(ChatColor.GREEN + "" + ChatColor.BOLD + "Available by default!");
         else lore.add(ChatColor.GREEN + "Upgrade with " + cost.getDescription() + "!");
 
