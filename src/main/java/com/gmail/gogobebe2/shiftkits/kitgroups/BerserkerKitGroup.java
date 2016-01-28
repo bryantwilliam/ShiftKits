@@ -113,7 +113,6 @@ public class BerserkerKitGroup implements KitGroup {
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
                             player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
                             item.setAmount(item.getAmount() - 1);
-                            event.setCancelled(true);
 
                             playesOnCooldown.put(PLAYER_UUID, COOLDOWN_TIME);
 
@@ -130,6 +129,7 @@ public class BerserkerKitGroup implements KitGroup {
                                 }
                             }.runTaskTimer(ShiftKits.instance, 0, 20);
                         }
+                        event.setCancelled(true);
                     }
                 }
             }
