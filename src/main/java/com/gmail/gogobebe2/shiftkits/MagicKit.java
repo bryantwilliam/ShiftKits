@@ -10,6 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 public class MagicKit extends Kit implements Listener {
+    public MagicKit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon, List<String> lore, Listener listener) {
+        this(name, level, requirement, contents, null, null, null, null, icon, lore, null, listener);
+    }
+
     public MagicKit(String id, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon, List<String> lore, String permissionNode, Listener listener) {
         this(id, level, requirement, contents, null, null, null, null, icon, lore, permissionNode, listener);
     }
@@ -17,14 +21,5 @@ public class MagicKit extends Kit implements Listener {
     public MagicKit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material helmet, Material chestplate, Material leggings, Material boots, Material icon, List<String> lore, String permissionNode, Listener listener) {
         super(name, level, requirement, contents, helmet, chestplate, leggings, boots, icon, lore, permissionNode);
         Bukkit.getPluginManager().registerEvents(listener, ShiftKits.instance);
-    }
-
-    public MagicKit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material helmet, Material chestplate, Material leggings, Material boots, Material icon, List<String> lore, Listener listener) {
-        super(name, level, requirement, contents, helmet, chestplate, leggings, boots, icon, lore, null);
-        Bukkit.getPluginManager().registerEvents(listener, ShiftKits.instance);
-    }
-
-    public MagicKit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon, List<String> lore, Listener listener) {
-        this(name, level, requirement, contents, null, null, null, null, icon, lore, null, listener);
     }
 }
