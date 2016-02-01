@@ -107,7 +107,9 @@ public class BerserkerKitGroup implements KitGroup {
                                     + playesOnCooldown.get(PLAYER_UUID) + " seconds left.");
                         }
                         else {
-                            player.setHealth(player.getHealth() - 6);
+                            double damage = player.getHealth() - 6;
+                            if (damage < 0) damage = 0;
+                            player.setHealth(damage);
                             player.playEffect(EntityEffect.HURT);
                             player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
