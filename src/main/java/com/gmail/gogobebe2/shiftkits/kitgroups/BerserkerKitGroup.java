@@ -2,7 +2,6 @@ package com.gmail.gogobebe2.shiftkits.kitgroups;
 
 import com.gmail.gogobebe2.shiftkits.Kit;
 import com.gmail.gogobebe2.shiftkits.MagicKit;
-import com.gmail.gogobebe2.shiftkits.ShiftKits;
 import com.gmail.gogobebe2.shiftkits.requirements.Cost;
 import org.bukkit.ChatColor;
 import org.bukkit.EntityEffect;
@@ -17,12 +16,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
 
 public class BerserkerKitGroup implements KitGroup {
     public static final short RED_DYE_METADATA = 1;
+
+    // debug:
+    private int debug = 0;
 
     @Override
     public Kit getLevel1() {
@@ -87,8 +88,8 @@ public class BerserkerKitGroup implements KitGroup {
 
         return new MagicKit(getName(), (short) level, cost, items, Material.INK_SACK, lore, "shiftkits."
                 + getName().toLowerCase(), new Listener() {
-            private Map<UUID, Short> playesOnCooldown = new HashMap<>();
-            private final short COOLDOWN_TIME = 30;
+            private Map<UUID, Long> playersOnCooldown = new HashMap<>();
+            private final short COOLDOWN_TIME = 30000;
 
             @EventHandler
             private void onPlayerInteract(PlayerInteractEvent event) {
@@ -101,39 +102,37 @@ public class BerserkerKitGroup implements KitGroup {
                             && meta.getDisplayName().equals(BLOODLUST_DISPLAYNAME)
                             && meta.getLore().equals(itemLore)) {
                         Player player = event.getPlayer();
-                        final UUID PLAYER_UUID = player.getUniqueId();
-                        if (playesOnCooldown.containsKey(PLAYER_UUID)) {
-                            player.sendMessage(ChatColor.RED + "Bloodlust is on cooldown and has "
-                                    + playesOnCooldown.get(PLAYER_UUID) + " seconds left.");
-                        }
+                        if (isOnCooldown(player)) player.sendMessage(ChatColor.RED
+                                + "Bloodlust is on cooldown and has " + secondsLeftOnCooldown(player) + " seconds left.");
                         else {
-                            double damage = player.getHealth() - 6;
-                            if (damage < 0) damage = 0;
-                            player.setHealth(damage);
+                            addPlayerCooldown(player);
+                            double finalHealth = player.getHealth() - 6;
+                            if (finalHealth < 0) finalHealth = 0;
+                            player.setHealth(finalHealth);
                             player.playEffect(EntityEffect.HURT);
                             player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
                             player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
                             player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
                             item.setAmount(item.getAmount() - 1);
 
-                            playesOnCooldown.put(PLAYER_UUID, COOLDOWN_TIME);
-
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    short cooldownTime = playesOnCooldown.get(PLAYER_UUID);
-                                    if (cooldownTime <= 0) {
-                                        playesOnCooldown.remove(PLAYER_UUID);
-                                        this.cancel();
-                                    }
-                                    else playesOnCooldown.put(PLAYER_UUID, --cooldownTime);
-
-                                }
-                            }.runTaskTimer(ShiftKits.instance, 0, 20);
                         }
                         event.setCancelled(true);
                     }
                 }
+            }
+
+            private boolean isOnCooldown(Player player) {
+                UUID uuid = player.getUniqueId();
+                return playersOnCooldown.containsKey(uuid) && System.currentTimeMillis() - playersOnCooldown.get(uuid) <= COOLDOWN_TIME;
+            }
+
+            private short secondsLeftOnCooldown(Player player) {
+                if (isOnCooldown(player)) return (short) ((System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) * 1000);
+                else return 0;
+            }
+
+            private void addPlayerCooldown(Player player) {
+                playersOnCooldown.put(player.getUniqueId(), System.currentTimeMillis());
             }
         });
     }

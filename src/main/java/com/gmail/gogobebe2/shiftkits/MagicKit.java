@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 import java.util.Map;
 
-public class MagicKit extends Kit implements Listener {
+public class MagicKit extends Kit {
     public MagicKit(String name, short level, Requirement requirement, Map<Integer, ItemStack> contents, Material icon, List<String> lore, Listener listener) {
         this(name, level, requirement, contents, null, null, null, null, icon, lore, null, listener);
     }
