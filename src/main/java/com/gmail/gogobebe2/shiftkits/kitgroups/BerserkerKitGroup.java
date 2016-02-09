@@ -123,7 +123,7 @@ public class BerserkerKitGroup implements KitGroup {
 
             private boolean isOnCooldown(Player player) {
                 UUID uuid = player.getUniqueId();
-                return playersOnCooldown.containsKey(uuid) && System.currentTimeMillis() - playersOnCooldown.get(uuid) <= COOLDOWN_TIME;
+                return playersOnCooldown.containsKey(uuid) && secondsLeftOnCooldown(player) > 0;
             }
 
             private short secondsLeftOnCooldown(Player player) {
