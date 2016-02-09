@@ -102,20 +102,19 @@ public class BerserkerKitGroup implements KitGroup {
                             && meta.getDisplayName().equals(BLOODLUST_DISPLAYNAME)
                             && meta.getLore().equals(itemLore)) {
                         Player player = event.getPlayer();
-                        if (isOnCooldown(player)) player.sendMessage(ChatColor.RED
-                                + "Bloodlust is on cooldown and has " + secondsLeftOnCooldown(player) + " seconds left.");
-                        else {
-                            addPlayerCooldown(player);
-                            double finalHealth = player.getHealth() - 6;
-                            if (finalHealth < 0) finalHealth = 0;
-                            player.setHealth(finalHealth);
-                            player.playEffect(EntityEffect.HURT);
-                            player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
-                            player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
-                            player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
-                            item.setAmount(item.getAmount() - 1);
+                        if (isOnCooldown(player)) {
+                            short timeLeft = (short) (COOLDOWN_TIME - (System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) / 1000);
 
+                            if (timeLeft <= 0) {
+                                playersOnCooldown.remove(player.getUniqueId());
+                                addBeserkerEffect(player, item);
+                            }
+                            else {
+                                player.sendMessage(ChatColor.RED
+                                        + "Bloodlust is on cooldown and has " + secondsLeftOnCooldown(player) + " seconds left.");
+                            }
                         }
+                        else addBeserkerEffect(player, item);
                         event.setCancelled(true);
                     }
                 }
@@ -127,11 +126,23 @@ public class BerserkerKitGroup implements KitGroup {
             }
 
             private short secondsLeftOnCooldown(Player player) {
-                return (short) ((System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) / 1000);
+                return (short) (COOLDOWN_TIME - (System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) / 1000);
             }
 
             private void addPlayerCooldown(Player player) {
                 playersOnCooldown.put(player.getUniqueId(), System.currentTimeMillis());
+            }
+
+            private void addBeserkerEffect(Player player, ItemStack item) {
+                addPlayerCooldown(player);
+                double finalHealth = player.getHealth() - 6;
+                if (finalHealth < 0) finalHealth = 0;
+                player.setHealth(finalHealth);
+                player.playEffect(EntityEffect.HURT);
+                player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
+                player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
+                item.setAmount(item.getAmount() - 1);
             }
         });
     }
