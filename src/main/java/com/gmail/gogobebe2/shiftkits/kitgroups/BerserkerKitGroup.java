@@ -103,9 +103,7 @@ public class BerserkerKitGroup implements KitGroup {
                             && meta.getLore().equals(itemLore)) {
                         Player player = event.getPlayer();
                         if (isOnCooldown(player)) {
-                            short timeLeft = (short) ((COOLDOWN_TIME - (System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId()))) / 1000);
-
-                            if (timeLeft <= 0) {
+                            if (secondsLeftOnCooldown(player) <= 0) {
                                 playersOnCooldown.remove(player.getUniqueId());
                                 addBeserkerEffect(player, item);
                             }
@@ -126,7 +124,7 @@ public class BerserkerKitGroup implements KitGroup {
             }
 
             private short secondsLeftOnCooldown(Player player) {
-                return (short) ((COOLDOWN_TIME - System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) / 1000);
+                return (short) ((COOLDOWN_TIME - (System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId()))) / 1000);
             }
 
             private void addPlayerCooldown(Player player) {
