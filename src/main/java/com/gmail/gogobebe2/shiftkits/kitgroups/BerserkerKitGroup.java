@@ -126,7 +126,7 @@ public class BerserkerKitGroup implements KitGroup {
             }
 
             private short secondsLeftOnCooldown(Player player) {
-                return (short) (COOLDOWN_TIME - (System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) / 1000);
+                return (short) ((COOLDOWN_TIME - System.currentTimeMillis() - playersOnCooldown.get(player.getUniqueId())) / 1000);
             }
 
             private void addPlayerCooldown(Player player) {
