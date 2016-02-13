@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.gogobebe2</groupId>
     <artifactId>ShiftKits</artifactId>
-    <version>1.2.4-PREALPHA-SNAPSHOT</version>
+    <version>1.2.5-PREALPHA-SNAPSHOT</version>
 
     <build>
         <pluginManagement>
@@ -45,7 +45,7 @@
             <artifactId>ShiftSpawn</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftSpawn/target/ShiftSpawn-1.5.4-BETA-SNAPSHOT.jar</systemPath>
+            <systemPath>/home/william/IdeaProjects/ShiftSpawn/target/ShiftSpawn-1.5.5-BETA-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gmail.gogobebe2</groupId>
@@ -59,7 +59,7 @@
             <artifactId>xcore-with-dependencies</artifactId>
             <version>LATEST</version>
             <scope>system</scope>
-            <systemPath>/home/william/IdeaProjects/ShiftKits/src/libs/xcore-1.0-jar-with-dependencies.jar</systemPath>
+            <systemPath>/home/william/IdeaProjects/ShiftKits/src/libs/xcore_14.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>de.slikey</groupId>
