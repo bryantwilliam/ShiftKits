@@ -16,9 +16,9 @@ public final class KitGroupInstances {
             kitGroups.add(new NightcrawlerKitGroup());
             kitGroups.add(new CapitalistKitGroup());
             // Commented out kits are commented because they have bugs in them and are being temporally removed from the kit selector.
-/*            kitGroups.add(new AngelKitGroup());*/
+/*            kitGroups.add(new AngelKitGroup());
             kitGroups.add(new BerserkerKitGroup());
-/*            kitGroups.add(new DemomanKitGroup());*/
+            kitGroups.add(new DemomanKitGroup());*/
         }
         return kitGroups;
     }
