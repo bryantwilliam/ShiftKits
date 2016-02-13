@@ -32,26 +32,26 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class KitSelector {
-    private static Map<UUID, KitSelector> kitSelectors = new HashMap<>();
+    private static Map<Player, KitSelector> kitSelectors = new HashMap<>();
 
     private static KitSelectorListener kitSelectorListener = new KitSelectorListener();
 
     private static final ItemStack selector = initSelector();
 
-    private static Map<UUID, Kit> pendingKits = new HashMap<>();
+    private static Map<Player, Kit> pendingKits = new HashMap<>();
 
-    private static Set<UUID> pastJoins = new HashSet<>();
+    private static Set<Player> pastJoins = new HashSet<>();
 
     private Inventory kitListMenu = Bukkit.createInventory(null,
             roundUpToNearestMultiple(KitGroupInstances.getInstances().size(), 9),
             ChatColor.BOLD + "" + ChatColor.AQUA + "Kit Selection Menu");
 
-    private UUID playerUUID;
-
     private Map<String, KitGroup> kitGroupButtonDisplaynames;
 
-    private KitSelector(final UUID playerUUID) throws SQLException, ClassNotFoundException {
-        this.playerUUID = playerUUID;
+    private Player player;
+
+    private KitSelector(final Player player) throws SQLException, ClassNotFoundException {
+        this.player = player;
 
         KitGroup swordsman = KitGroupInstances.getKitGroupInstance("Swordsman");
         assert swordsman != null;
@@ -59,7 +59,7 @@ public class KitSelector {
         boolean hasKit = false;
         String[] kitsColumn;
         try {
-            kitsColumn = ShiftStats.getAPI().getKits(Bukkit.getPlayer(playerUUID).getUniqueId());
+            kitsColumn = ShiftStats.getAPI().getKits(player.getUniqueId());
             if (kitsColumn != null && kitsColumn.length != 0) {
                 for (String kitID : kitsColumn) if (swordsman.getLevel1().getId().equals(kitID)) hasKit = true;
             }
@@ -67,16 +67,15 @@ public class KitSelector {
             e.printStackTrace();
         }
 
-        if (!hasKit) ShiftStats.getAPI().addKit(Bukkit.getPlayer(playerUUID).getUniqueId(), swordsman.getLevel1().getId());
+        if (!hasKit) ShiftStats.getAPI().addKit(player.getUniqueId(), swordsman.getLevel1().getId());
 
         BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
         scheduler.scheduleSyncRepeatingTask(ShiftKits.instance, new Runnable() {
             @Override
             public void run() {
-                if (pendingKits.containsKey(playerUUID)
+                if (pendingKits.containsKey(player)
                         && ShiftSpawn.getInstance().getGame().getGameState() == GameState.STARTED) {
-                    Player player = Bukkit.getPlayer(playerUUID);
-                    Kit kit = pendingKits.get(playerUUID);
+                    Kit kit = pendingKits.get(player);
                     kit.apply(player);
                     PlayerInventory inventory = player.getInventory();
                     if (inventory.contains(selector)) {
@@ -85,7 +84,7 @@ public class KitSelector {
                     }
                     player.sendMessage(ChatColor.GREEN + "Kit " + getKitName(kit)
                             + " level " + kit.getLevel() + " has been applied to you");
-                    pendingKits.remove(playerUUID);
+                    pendingKits.remove(player);
                 }
             }
         }, 0L, 2L);
@@ -121,13 +120,12 @@ public class KitSelector {
     }
 
     private boolean canBuy(Kit kit) throws SQLException, ClassNotFoundException {
-        return kit.getRequirement().satisfies(Bukkit.getPlayer(playerUUID)) && (!kit.needsPermission() || Bukkit.getPlayer(playerUUID).hasPermission(kit.getPermission()));
+        return kit.getRequirement().satisfies(player) && (!kit.needsPermission() || player.hasPermission(kit.getPermission()));
     }
 
     private void buy(Kit kit) throws SQLException, ClassNotFoundException {
         Requirement requirement = kit.getRequirement();
         String id = kit.getId();
-        Player player = Bukkit.getPlayer(playerUUID);
 
         if (requirement instanceof Cost) ((Cost) requirement).takeXP(player);
         ShiftStats.getAPI().addKit(player.getUniqueId(), id);
@@ -159,8 +157,6 @@ public class KitSelector {
     }
 
     private short getCurrentLevel(KitGroup kitGroup) {
-        Player player = Bukkit.getPlayer(playerUUID);
-
         String kitName = kitGroup.getName().toLowerCase();
         int highestLevel = 0;
         String[] kitColumn = new String[0];
@@ -195,16 +191,15 @@ public class KitSelector {
         @EventHandler
         private static void onPlayerJoin(PlayerJoinEvent event) {
             Player player = event.getPlayer();
-            UUID playerUUID = player.getUniqueId();
             try {
-                kitSelectors.put(playerUUID, new KitSelector(playerUUID));
+                kitSelectors.put(player, new KitSelector(player));
             } catch (SQLException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
-            if (!pastJoins.contains(playerUUID)) {
+            if (!pastJoins.contains(player)) {
                 player.getInventory().addItem(selector);
-                pastJoins.add(playerUUID);
+                pastJoins.add(player);
             }
         }
 
@@ -219,12 +214,12 @@ public class KitSelector {
                     Player player = event.getPlayer();
                     player.sendMessage(ChatColor.GREEN + "Opening kit selection menu...");
                     try {
-                        kitSelectors.get(player.getUniqueId()).updateKitListMenu();
+                        kitSelectors.get(player).updateKitListMenu();
                     } catch (SQLException | ClassNotFoundException e) {
                         e.printStackTrace();
                         player.sendMessage(ChatColor.RED + "Error! Can't connect to sql database!");
                     }
-                    player.openInventory(kitSelectors.get(player.getUniqueId()).kitListMenu);
+                    player.openInventory(kitSelectors.get(player).kitListMenu);
                 }
             }
         }
@@ -238,7 +233,7 @@ public class KitSelector {
                 Inventory inventory = event.getInventory();
                 String inventoryName = inventory.getName();
 
-                KitSelector kitSelector = kitSelectors.get(player.getUniqueId());
+                KitSelector kitSelector = kitSelectors.get(player);
 
                 String buyOrSellKitMenuNameSuffix = ChatColor.BOLD + "" + ChatColor.AQUA + "Submenu - ";
                 String selectButtonDisplaynamePrefix = ChatColor.GREEN + "" + ChatColor.ITALIC + "Select ";
@@ -337,7 +332,7 @@ public class KitSelector {
 
                     if (button.getItemMeta().getDisplayName().contains(selectButtonDisplaynamePrefix)) {
                         if (level != 0) {
-                            pendingKits.put(player.getUniqueId(), kit);
+                            pendingKits.put(player, kit);
                             player.sendMessage(ChatColor.GREEN + "You have selected " + getKitName(kit) + " level " + kit.getLevel());
                         } else player.sendMessage(ChatColor.RED + "Error, you don't own this kit!");
                     } else {
