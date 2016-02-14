@@ -22,9 +22,6 @@ import java.util.*;
 public class BerserkerKitGroup implements KitGroup {
     public static final short RED_DYE_METADATA = 1;
 
-    // debug:
-    private int debug = 0;
-
     @Override
     public Kit getLevel1() {
         return getLevel(2, 10, 15000, 1);
