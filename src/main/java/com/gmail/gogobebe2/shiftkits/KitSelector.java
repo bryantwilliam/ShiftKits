@@ -40,7 +40,7 @@ public class KitSelector {
 
     private static Map<Player, Kit> pendingKits = new HashMap<>();
 
-    private static Set<Player> pastJoins = new HashSet<>();
+    private static Set<UUID> pastJoins = new HashSet<>();
 
     private Inventory kitListMenu = Bukkit.createInventory(null,
             roundUpToNearestMultiple(KitGroupInstances.getInstances().size(), 9),
@@ -191,15 +191,14 @@ public class KitSelector {
         @EventHandler
         private static void onPlayerJoin(PlayerJoinEvent event) {
             Player player = event.getPlayer();
-            try {
-                kitSelectors.put(player, new KitSelector(player));
-            } catch (SQLException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            if (!pastJoins.contains(player)) {
+            if (!pastJoins.contains(player.getUniqueId())) {
+                try {
+                    kitSelectors.put(player, new KitSelector(player));
+                } catch (SQLException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 player.getInventory().addItem(selector);
-                pastJoins.add(player);
+                pastJoins.add(player.getUniqueId());
             }
         }
 

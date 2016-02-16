@@ -1,5 +1,5 @@
 name: ShiftKits
-version: 1.2.7-PREALPHA-SNAPSHOT
+version: 1.2.8-PREALPHA-SNAPSHOT
 main: com.gmail.gogobebe2.shiftkits.ShiftKits
 description: Part of the Shift minigame. Implements purchasable kit.
 author: William Bryant (gogobebe2)
