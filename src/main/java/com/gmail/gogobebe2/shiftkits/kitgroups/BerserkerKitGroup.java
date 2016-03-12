@@ -134,7 +134,7 @@ public class BerserkerKitGroup implements KitGroup {
                 if (finalHealth < 0) finalHealth = 0;
                 player.setHealth(finalHealth);
                 player.playEffect(EntityEffect.HURT);
-                player.playSound(player.getLocation(), Sound.HURT_FLESH, 1, 1);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 1);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, strengthDuration * 20, 1));
                 player.sendMessage(ChatColor.RED + "Your deadly inhumane lust takes over!");
                 item.setAmount(item.getAmount() - 1);
